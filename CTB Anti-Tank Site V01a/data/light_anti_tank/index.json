@@ -1,0 +1,15 @@
+{
+    "blocks": [
+
+        {
+            "type": "title",
+            "text": "Light Anti-Tank"
+        },
+
+        {
+            "type": "text",
+            "text": "Portable infantry weapons designed to engage armored vehicles at short range."
+        }
+
+    ]
+}

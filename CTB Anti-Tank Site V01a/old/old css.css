@@ -1,0 +1,822 @@
+/* =====================================
+   Base
+===================================== */
+
+body {
+    margin: 0;
+    background: #f5f5f5;
+    color: #222;
+    font-family: Arial, sans-serif;
+}
+
+.container {
+
+    max-width: 1100px;
+
+    margin: 0 auto;
+
+    padding: 24px;
+
+}
+
+/* =====================================
+   Page Layout
+===================================== */
+
+.page-layout {
+
+    display: flex;
+
+    justify-content: center;
+
+    gap: 32px;
+
+    max-width: 1600px;
+
+    margin: auto;
+
+}
+
+/* =====================================
+   Generic Blocks
+===================================== */
+
+.block {
+    margin-bottom: 24px;
+}
+
+/* =====================================
+   Title
+===================================== */
+
+.block-title h1 {
+    margin: 0;
+}
+
+/* =====================================
+   Headings
+===================================== */
+
+.block-heading h2 {
+    margin: 0;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #ddd;
+}
+
+/* =====================================
+   Text
+===================================== */
+
+.block-text p {
+    margin: 0;
+    line-height: 1.6;
+}
+
+/* =====================================
+   Images
+===================================== */
+
+.block-image img {
+    width: 100%;
+    display: block;
+    border-radius: 4px;
+}
+
+.block-image figcaption {
+    margin-top: 8px;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* =====================================
+   Quote
+===================================== */
+
+.block-quote {
+    border-left: 4px solid #999;
+    padding-left: 16px;
+    color: #555;
+    font-style: italic;
+}
+
+/* =====================================
+   Callout
+===================================== */
+
+.block-callout {
+    display: flex;
+    gap: 12px;
+
+    background: #eef5ff;
+
+    border: 1px solid #c9ddff;
+
+    border-radius: 6px;
+
+    padding: 16px;
+}
+
+.callout-icon {
+    font-size: 1.3rem;
+}
+
+.callout-content {
+    flex: 1;
+}
+
+/* =====================================
+   Divider
+===================================== */
+
+.block-divider hr {
+    border: none;
+    border-top: 1px solid #ddd;
+}
+
+/* =====================================
+   Lists
+===================================== */
+
+.block-list ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.block-list li {
+    margin-bottom: 6px;
+}
+
+/* =====================================
+   Columns
+===================================== */
+
+.columns {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+.column {
+    flex: 1;
+    min-width: 0;
+}
+
+/* =====================================
+   Markdown Styling
+===================================== */
+
+strong {
+    font-weight: bold;
+}
+
+em {
+    font-style: italic;
+}
+
+del {
+    text-decoration: line-through;
+}
+
+code {
+    background: #ececec;
+    padding: 2px 4px;
+    border-radius: 4px;
+    font-family: Consolas, monospace;
+}
+
+/* =====================================
+   Links
+===================================== */
+
+a {
+    color: #0066cc;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* =====================================
+   Inline Icons
+===================================== */
+
+.inline-icon-link {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.inline-icon {
+    height: 1.1em;
+    width: auto;
+
+    vertical-align: -0.15em;
+
+    margin-left: 0.1em;
+    margin-right: 0.1em;
+}
+
+/* =====================================
+   Cards
+===================================== */
+
+.block-card {
+
+    background: white;
+
+    border: 1px solid #ddd;
+
+    border-radius: 8px;
+
+    padding: 14px;
+
+    margin-bottom: 12px;
+
+}
+
+.card-body > .columns {
+    margin-bottom: 0;
+}
+
+.card-body > .block-card:last-child {
+    margin-bottom: 0;
+}
+
+.card-header {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    margin-bottom: 8px;
+
+}
+
+.card-title {
+
+    font-weight: bold;
+
+}
+
+.card-body {
+
+    color: #444;
+
+}
+
+/* =====================================
+   Table Of Contents
+===================================== */
+
+/* =====================================
+   TOC Sidebar
+===================================== */
+
+:root {
+
+    --content-width: 1100px;
+
+    --toc-width: 150px;
+
+    --toc-gap: 30px;
+
+}
+
+
+/* =====================================
+   TOC Widget
+===================================== */
+
+#toc-container {
+
+    position: fixed;
+
+    top: 50%;
+
+    left: calc(50% - 600px);
+
+    transform: translateY(-50%);
+
+    z-index: 1000;
+
+}
+
+.toc-widget {
+
+    position: relative;
+
+    padding-right: 50px;
+
+}
+
+.toc-collapsed {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+
+    cursor: pointer;
+
+}
+
+.toc-line {
+
+    height: 2px;
+
+    background: #888;
+
+    border-radius: 999px;
+
+}
+
+.toc-line-level-1 {
+
+    width: 18px;
+
+}
+
+.toc-line-level-2 {
+
+    width: 10px;
+
+    margin-left: 8px;
+
+}
+
+.toc-expanded {
+
+    display: none;
+
+    position: absolute;
+
+    left: 0;
+
+    top: 0;
+
+    transform: translateX(24px);
+
+    width: 260px;
+
+    background: white;
+
+    border: 1px solid #ddd;
+
+    border-radius: 8px;
+
+    padding: 12px;
+
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+
+    transform: translateY(-25%);
+
+
+}
+
+.toc-widget:hover .toc-expanded {
+
+    display: block;
+
+}
+
+
+.toc {
+
+    background: white;
+
+    border: 1px solid #ddd;
+
+    border-radius: 8px;
+
+    padding: 16px;
+
+    max-height: calc(100vh - 48px);
+
+    overflow-y: auto;
+
+}
+
+.toc h2 {
+
+    margin-top: 0;
+
+}
+
+.toc ul {
+
+    list-style: none;
+
+    padding-left: 0;
+
+    margin: 0;
+
+}
+
+.toc li {
+
+    margin: 6px 0;
+
+}
+
+.toc a {
+
+    text-decoration: none;
+
+}
+
+.toc a:hover {
+
+    text-decoration: underline;
+
+}
+
+.toc-level-2 {
+
+    padding-left: 20px;
+
+    font-size: 0.95em;
+
+}
+
+.toc-active {
+
+    color: #0066cc;
+
+}
+
+.toc-line-level-1.toc-active {
+
+    background: #0066cc;
+
+}
+
+.toc-level-1.toc-active a {
+
+    color: #0066cc;
+
+    font-weight: bold;
+
+}
+
+.toc-line-level-1:hover {
+
+    background: #0066cc;
+
+}
+
+.toc-level-1 a:hover {
+
+    color: #0066cc;
+
+}
+
+/* =====================================
+   Glossary
+===================================== */
+.glossary-term {
+
+    text-decoration: underline;
+
+    text-decoration-style: dotted;
+
+    cursor: help;
+
+}
+
+#glossary-popup {
+
+    display: none;
+
+    position: fixed;
+
+    width: 320px;
+
+    background: white;
+
+    border: 1px solid #ddd;
+
+    border-radius: 8px;
+
+    padding: 12px;
+
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+
+    z-index: 9999;
+
+}
+
+#glossary-popup img {
+
+    width: 100%;
+
+    margin-top: 8px;
+
+    border-radius: 4px;
+
+}
+
+#glossary-popup h3 {
+
+    margin-top: 0;
+
+}
+
+
+/* =====================================
+   Entities
+===================================== */
+.entity {
+
+    text-decoration: underline;
+
+    text-decoration-style: dotted;
+
+    cursor: pointer;
+
+}
+
+.entity-popup-header {
+
+    margin-bottom: 8px;
+
+    padding-bottom: 6px;
+
+    border-bottom: 1px solid #eee;
+
+    font-weight: bold;
+
+}
+
+.entity-open-link {
+
+    text-decoration: none;
+
+    color: inherit;
+
+}
+
+.entity-open-link:hover {
+
+    text-decoration: underline;
+
+}
+
+#entity-popup {
+
+    position: fixed;
+
+    display: none;
+
+    width: 360px;
+    max-height: 70vh;
+
+    overflow-y: auto;
+
+    background: white;
+
+    border: 1px solid #ddd;
+
+    border-radius: 10px;
+
+    padding: 12px;
+
+    box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+
+    z-index: 9999;
+
+}
+
+#entity-popup .container {
+
+    max-width: 100% !important;
+
+    padding: 0 !important;
+
+}
+
+#entity-popup .columns {
+
+    display: block !important;
+
+}
+
+
+/* =====================================
+   Grid
+===================================== */
+#grid {
+
+    display: grid;
+
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+
+    gap: 12px;
+
+    padding: 20px;
+
+}
+
+.grid-item {
+
+    position: relative;
+
+    cursor: pointer;
+
+    overflow: hidden;
+
+    border-radius: 8px;
+
+    background: #111;
+
+}
+
+.grid-item img {
+
+    width: 100%;
+
+    height: 180px;
+
+    object-fit: cover;
+
+    display: block;
+
+}
+
+.grid-overlay {
+
+    position: absolute;
+
+    inset: 0;
+
+    background: rgba(0,0,0,0.6);
+
+    color: white;
+
+    opacity: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    transition: 0.2s;
+
+    text-align: center;
+
+    padding: 10px;
+
+}
+
+.grid-item:hover .grid-overlay {
+
+    opacity: 1;
+
+}
+
+.grid-title {
+
+    font-weight: bold;
+
+    margin-bottom: 6px;
+
+}
+
+.tag {
+
+    display: inline-block;
+
+    font-size: 11px;
+
+    margin: 2px;
+
+    padding: 2px 6px;
+
+    border-radius: 4px;
+
+    background: rgba(255,255,255,0.2);
+
+}
+
+
+/* =====================================
+   Search
+===================================== */
+#search {
+    width: calc(100% - 40px);
+    margin: 20px;
+    padding: 10px;
+
+    font-size: 16px;
+
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+/* =====================================
+   Tags Bar
+===================================== */
+#active-tags {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 8px;
+
+    padding: 0 20px 20px;
+
+}
+
+.active-tag {
+
+    cursor: pointer;
+
+    padding: 4px 10px;
+
+    border-radius: 999px;
+
+    background: #444;
+
+    color: white;
+
+    font-size: 14px;
+
+    user-select: none;
+
+}
+
+.active-tag:hover {
+
+    opacity: 0.8;
+
+}
+
+#search-container {
+
+    position: relative;
+
+    margin: 20px;
+
+}
+
+#tag-suggestions {
+
+    position: absolute;
+
+    top: 100%;
+
+    left: 0;
+    right: 0;
+
+    z-index: 100;
+
+    display: none;
+
+    background: #222;
+
+    border: 1px solid #444;
+
+    border-radius: 6px;
+
+    overflow: hidden;
+
+}
+
+.tag-suggestion {
+
+    padding: 8px 12px;
+
+    cursor: pointer;
+
+}
+
+.tag-suggestion:hover {
+
+    background: #333;
+
+}
+
+
+/* =====================================
+   Mobile
+===================================== */
+
+@media (max-width: 768px) {
+
+    .columns {
+        flex-direction: column;
+    }
+
+    #toc-container {
+
+        display: none;
+
+    }
+
+}

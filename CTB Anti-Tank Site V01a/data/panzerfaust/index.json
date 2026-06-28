@@ -1,0 +1,235 @@
+{
+    "meta": {
+        "title": "Panzerfaust",
+        "tags": ["period:WW2", "nation:Germany", "type:AT Weapon"]
+    },
+
+    "blocks": [
+
+        {
+            "type": "columns",
+            "comment": "Two-column layout test",
+
+            "columns": [
+
+                [
+
+                    {
+                        "type": "image",
+                        "comment": "Weapon image",
+                        "src": "main.png",
+                        "caption": ""
+                    },
+                    {
+                        "type": "image",
+                        "comment": "Scale Image",
+                        "src": "scale.png",
+                        "caption": ""
+                    },
+                    {
+                        "type": "image",
+                        "comment": "Turnaround Image",
+                        "src": "turnaround.png",
+                        "caption": ""
+                    }
+
+                ],
+
+                [
+                    {
+                        "type": "title",
+                        "comment": "Main title",
+                        "text": "Panzerfaust 30/60"
+                    },
+
+
+                    {
+                        "type": "text",
+                        "comment": "Intro text",
+                        "text": "An icon of the late war, the Panzerfaust was the first ever single-use anti-tank weapons in history. It's configuration of a warhead propelled by a disposable tube was copied around the world, and is still in successful use to this day. Developed by Hugo Schneider AG, the exceptionally simple and economic design allowed it to be manufactured in astronomica numbers, being deployed to millions of German troops during the Second World War. The \"Tank Fist\" as it was known, was higly effective against contemporary enemy armor when deployed in close-quaters situation. It's portability granted quick and dynamic deployments, it's [[HEAT]] warheads provided over 200mm of penetrative performance, more than enough to handle anything in its, admittidely small path.\n\nIn ARMA III, the [[spearhead1944]] DLC provides both the Panzerfaust 30 (Gross, lit. Large) and the Panzerfaust 60 variants, each named after it's effective range in meters."
+                    },
+
+                    {
+                        "type": "heading",
+                        "text": "Quick Data"
+                    },
+
+                    {
+                        "type": "card-armament",
+                        "blocks": [
+                            {
+                                "type": "columns",
+                                "columns": [
+                                    [
+                                        {
+                                            "type": "card",
+                                            "title": "Panzerfaust 30",
+                                            "text": "• 140mm warhead\n• 30m range."
+                                        }
+                                    ],
+                                    [
+                                        {
+                                            "type": "card",
+                                            "title": "Panzerfaust 60",
+                                            "text": "• 140mm warhead\n• 60m range."
+                                        }
+                                    ]
+                                ]
+                            }
+                        ]
+                    },
+
+                    {
+                        "type": "columns",
+                    
+                        "columns": [
+                                
+                            [
+                                
+                                {
+                                    "type": "card-nation",
+                                    "text": "Germany"
+                                },
+
+                                {
+                                    "type": "card-weight",
+                                    "text": "• **5.56kg |** Panzerfaust 30. \n• **6.60kg |** Panzerfaust 60. "
+                                },
+
+                                {
+                                    "type": "card-identificaiton",
+                                     "text": "• Launchers themselves are thin, sand colored tubes, both featuring large shaped charges on the firing end.\n• Units carrying these launchers feature a unique under the shoulder animation."
+                                }
+                    
+                            ],
+                            [              
+                                {
+                                    "type": "card-period",
+                                    "text": "World War II"
+                                },
+                                                  
+                                {
+                                    "type": "card-role",
+                                    "text": "World War II"
+                                },
+                    
+                                {
+                                    "type": "card-content",
+                                    "text": "Spearhead 1944",
+                                    "icon": ":spearhead1944:"
+                                },
+
+                                {
+                                    "type": "card-production",
+                                    "text": "**1942-1945**\n**8,000,000+** produced.\n**15-25** Reichsmark"
+                                }
+                            ]
+                    
+                        ]
+                    
+                    }
+
+                ]
+
+            ]
+
+        },
+
+
+        {
+            "type": "heading",
+            "comment": "Heading block",
+            "text": "① Equip and Assembly"
+        },
+
+        {
+            "type": "columns",
+            "comment": "Two-column layout test",
+
+            "columns": [
+                [
+                    {
+                        "type": "text",
+                        "comment": "Overview paragraph",
+                        "text": "Equip the Panzerfaust 30 or Panzerfaust 60 under the Launcher Slot from the Spearhead DLC.\nMake sure it is loaded by checking to see if the tube has the grenade on the end, if not then the tubed is used, and cannot be reloaded. If you are unable to fire, make sure the tube has the Warhead Panzerfaust round within the ammo slot. If it is not, but the tube is unfired, it may appear as if the tube is ready to fire, but without the round, it is unable to do so."
+                    }
+                ],
+
+                [
+
+                    {
+                        "type": "columns",
+                    
+                        "columns": [
+                    
+                            [
+                                {
+                                    "type": "image",
+                                    "src": "panzerfaust30_h.png",
+                                    "caption": ""
+                                }
+                            ],
+                    
+                            [
+                                {
+                                    "type": "image",
+                                    "src": "panzerfaust30_i.png",
+                                    "caption": ""
+                                }
+                            ]
+                    
+                        ]
+                    }
+                ]
+            ]
+        },
+
+        
+        {
+            "type": "heading",
+            "comment": "Heading block",
+            "text": "② Target Acquisition"
+        },
+
+        {
+            "type": "columns",
+            "comment": "Two-column layout test",
+
+            "weights": [3, 1],
+
+            "columns": [
+                [
+                    {
+                        "type": "text",
+                        "comment": "Overview paragraph",
+                        "text": "Use the sights to line up the target. The Panzerfaust 30 has a maximum engagement range of 30 meters, and as such only has one zero setting. Conversely, the Panzerfaust 60 is able to engage up to 80 meters, by using the ladder sight, you can switch between differing zeros. It's recommended that you aim center mass, as the innate inaccuracies of the round, and its high-arc may make precise firing difficult. Large targets such as the engine block are viable within 30 meters, however, any further than that one may struggle. Further, engaging moving targets at a distance will be difficult, as the round suffers from a very slow velocity."
+                    }
+                ],
+
+                [
+                    {
+                        "type": "image",
+                        "src": "panzerfaust30_j.png",
+                        "caption": "",
+                        "width": "50%"
+                    }
+                ]
+            ]
+        },
+
+        {
+            "type": "heading",
+            "comment": "Heading block",
+            "text": "③ Firing"
+        },
+
+        {
+            "type": "text",
+            "comment": "Overview paragraph",
+            "text": "When engaging armored targets, such as the M4 Sherman, recommended engagement ranges are within 30 meters. From outside that distance, both Panzerfausts struggle to penetrate for immediate kills, however, large damage may still be inflicted upon the target and its occupants. When in doubt, wait for the closest possible engagement range.\nOnce firing is complete, dispose of the weapon, as spent tubes are useless and unable to be reloaded."
+        }
+
+
+
+    ]
+}

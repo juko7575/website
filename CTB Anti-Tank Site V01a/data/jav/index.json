@@ -1,0 +1,224 @@
+{
+    "meta": {
+        "title": "FGM-148 Javelin",
+        "tags": ["period:Modern", "nation:USA", "type:AT Weapon"]
+    },
+
+    "blocks": [
+
+        {
+            "type": "columns",
+            "comment": "Two-column layout test",
+
+            "columns": [
+
+                [
+
+                    {
+                        "type": "image",
+                        "comment": "Weapon image",
+                        "src": "main.png",
+                        "caption": ""
+                    },
+                    {
+                        "type": "image",
+                        "comment": "Scale Image",
+                        "src": "scale.png",
+                        "caption": ""
+                    },
+                    {
+                        "type": "image",
+                        "comment": "Turnaround Image",
+                        "src": "turnaround.png",
+                        "caption": ""
+                    }
+
+                ],
+
+                [
+                    {
+                        "type": "title",
+                        "comment": "Main title",
+                        "text": "FGM-148 Javelin"
+                    },
+
+
+                    {
+                        "type": "text",
+                        "comment": "Intro text",
+                        "text": "The FGM-148 Javelin is America’s premier Man-Portable Anti-Tank System co-developed by leading defense corporations RTX and Lockheed Martin. The Semi-Disposable system’s Command Launch Unit grants the exceptional visibility in-comparison to the Javelin’s contemporaries, and the Infrared guided Fire-and-Forget missile permits greater flexibility and safety for the wielder relative to its wire-guided forebearers such as the M47 Dragon. Its HEAT tandem warhead is renowned for punching through its targets with relative ease, and its Top-Attack capabilities smites even the most well-armored opponents. Despite these lofty capabilities, the Javelin weighs only 18 kgs, allowing it to be effectively wielded my a single man. Today the Javelin is used and studied the world over as some of the peak of MANPADS engineering."
+                    },
+
+                    {
+                        "type": "heading",
+                        "text": "Quick Data"
+                    },
+
+                    {
+                        "type": "card-armament",
+                        "blocks": [
+                            {
+                                "type": "text",
+                                "text": "• Extremely effective to the point of overkill against almost all soft targets. Highly effective against Hard Targets."
+                            },
+                            {
+                                "type": "card",
+                                "title": "127mm Missile",
+                                "text": "• Manual Feed.\n• 2000~ meter range.\n• Tandem HEAT."
+                            }
+                        ]
+                    },
+
+                    {
+                        "type": "columns",
+                    
+                        "columns": [
+                                
+                            [
+                                
+                                {
+                                    "type": "card-nation",
+                                    "text": "Germany"
+                                },
+
+                                {
+                                    "type": "card-weight",
+                                    "text": "• **17.9kg |** Total. \n• **04.9kg |** Command Launch Unit.\n• **13,0kg |** Launch Tube."
+                                },
+
+                                {
+                                    "type": "card-identificaiton",
+                                     "text": "• Launchers themselves are thin, sand colored tubes, both featuring large shaped charges on the firing end.\n• Units carrying these launchers feature a unique under the shoulder animation."
+                                }
+                    
+                            ],
+                            [                                                               
+                                {
+                                    "type": "card-period",
+                                    "text": "Modern"
+                                },
+
+                                {
+                                    "type": "card-conflicts",
+                                    "text": "Iraq War, War in Afghanistan, Syrian Civil War, Russian Invasion of Ukraine"
+                                },
+                    
+                                {
+                                    "type": "card-content",
+                                    "text": ":ace3:"
+                                },
+
+                                {
+                                    "type": "card-production",
+                                    "text": "**1996-**\n**50,000+** produced.\n**$500,000** USD"
+                                }
+                            ]
+                    
+                        ]
+                    
+                    }
+
+                ]
+
+            ]
+
+        },
+
+
+        {
+            "type": "heading",
+            "comment": "Heading block",
+            "text": "① Equip and Assembly"
+        },
+
+        {
+            "type": "columns",
+            "comment": "Two-column layout test",
+
+            "columns": [
+                [
+                    {
+                        "type": "text",
+                        "comment": "Overview paragraph",
+                        "text": "Equip the Panzerfaust 30 or Panzerfaust 60 under the Launcher Slot from the Spearhead DLC.\nMake sure it is loaded by checking to see if the tube has the grenade on the end, if not then the tubed is used, and cannot be reloaded. If you are unable to fire, make sure the tube has the Warhead Panzerfaust round within the ammo slot. If it is not, but the tube is unfired, it may appear as if the tube is ready to fire, but without the round, it is unable to do so."
+                    }
+                ],
+
+                [
+
+                    {
+                        "type": "columns",
+                    
+                        "columns": [
+                    
+                            [
+                                {
+                                    "type": "image",
+                                    "src": "panzerfaust30_h.png",
+                                    "caption": ""
+                                }
+                            ],
+                    
+                            [
+                                {
+                                    "type": "image",
+                                    "src": "panzerfaust30_i.png",
+                                    "caption": ""
+                                }
+                            ]
+                    
+                        ]
+                    }
+                ]
+            ]
+        },
+
+        
+        {
+            "type": "heading",
+            "comment": "Heading block",
+            "text": "② Target Acquisition"
+        },
+
+        {
+            "type": "columns",
+            "comment": "Two-column layout test",
+
+            "weights": [3, 1],
+
+            "columns": [
+                [
+                    {
+                        "type": "text",
+                        "comment": "Overview paragraph",
+                        "text": "Use the sights to line up the target. The Panzerfaust 30 has a maximum engagement range of 30 meters, and as such only has one zero setting. Conversely, the Panzerfaust 60 is able to engage up to 80 meters, by using the ladder sight, you can switch between differing zeros. It's recommended that you aim center mass, as the innate inaccuracies of the round, and its high-arc may make precise firing difficult. Large targets such as the engine block are viable within 30 meters, however, any further than that one may struggle. Further, engaging moving targets at a distance will be difficult, as the round suffers from a very slow velocity."
+                    }
+                ],
+
+                [
+                    {
+                        "type": "image",
+                        "src": "panzerfaust30_j.png",
+                        "caption": "",
+                        "width": "50%"
+                    }
+                ]
+            ]
+        },
+
+        {
+            "type": "heading",
+            "comment": "Heading block",
+            "text": "③ Firing"
+        },
+
+        {
+            "type": "text",
+            "comment": "Overview paragraph",
+            "text": "When engaging armored targets, such as the M4 Sherman, recommended engagement ranges are within 30 meters. From outside that distance, both Panzerfausts struggle to penetrate for immediate kills, however, large damage may still be inflicted upon the target and its occupants. When in doubt, wait for the closest possible engagement range.\nOnce firing is complete, dispose of the weapon, as spent tubes are useless and unable to be reloaded."
+        }
+
+
+
+    ]
+}

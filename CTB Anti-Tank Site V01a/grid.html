@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <title>Grid</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+
+    <header class="site-header">
+
+        <div class="header-top">
+    
+            <a class="site-logo" href="grid.html">
+    
+                <img src="assets/logo.png" alt="Logo">
+    
+                <span>CTB</span>
+    
+            </a>
+    
+            <div class="header-search">
+    
+                <input
+                    id="search"
+                    type="text"
+                    placeholder="Search weapons, vehicles, tags..."
+                >
+
+               
+                <div id="tag-menu"></div>
+                
+    
+                <div id="tag-suggestions"></div>
+    
+            </div>
+    
+            <nav class="header-links">
+    
+                <a href="#">About</a>
+    
+                <a href="#">Settings</a>
+    
+            </nav>
+    
+        </div>
+    
+        <div id="active-tags"></div>
+    
+    </header>
+    
+
+
+    <div class="grid-container">
+
+        <div id="grid"></div>
+    
+    </div>
+
+    <div id="page-overlay">
+
+        <div id="page-overlay-backdrop"></div>
+    
+        <div id="page-overlay-center">
+    
+            <div id="page-overlay-content">
+    
+                <main
+                    id="overlay-content"
+                    class="container"
+                ></main>
+    
+            </div>
+    
+        </div>
+    
+        <button id="page-close">
+            ✕
+        </button>
+    
+        <aside id="overlay-toc"></aside>
+    
+    </div>
+    
+    <script src="base/entityRegistry.js"></script>
+    <script src="base/iconRegistry.js"></script>
+    <script src="base/blockTemplates.js"></script>
+    <script src="data/tags.js"></script>
+    
+    <script src="js/blocks.js"></script>
+    
+    <script src="js/grid.js"></script>
+
+</body>
+
+</html>
