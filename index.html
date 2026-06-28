@@ -8,6 +8,10 @@
 
     <link rel="stylesheet" href="css/style.css">
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
 </head>
 
 <body>
@@ -25,32 +29,58 @@
             </a>
     
             <div class="header-search">
-    
-                <input
-                    id="search"
-                    type="text"
-                    placeholder="Search weapons, vehicles, tags..."
-                >
 
-               
+                <div id="search-box">
+            
+                    <input
+                        id="search"
+                        type="text"
+                        placeholder="Search weapons, vehicles, tags..."
+                    >
+            
+                    <div id="search-tags"></div>
+            
+                </div>
+            
                 <div id="tag-menu"></div>
-                
-    
+            
                 <div id="tag-suggestions"></div>
-    
+            
             </div>
     
-            <nav class="header-links">
-    
-                <a href="#">About</a>
-    
-                <a href="#">Settings</a>
-    
-            </nav>
+            <nav
+            id="view-nav"
+            class="header-links"
+        >
+        
+            <a
+                href="#"
+                class="view-link"
+                data-view="antiTank"
+            >
+                Anti-Tank
+            </a>
+        
+            <a
+                href="#"
+                class="view-link"
+                data-view="armor"
+            >
+                Armor
+            </a>
+        
+            <a
+                href="#"
+                class="view-link"
+                data-view="configs"
+            >
+                Configs
+            </a>
+        
+        </nav>
     
         </div>
     
-        <div id="active-tags"></div>
     
     </header>
     
@@ -91,6 +121,7 @@
     <script src="base/iconRegistry.js"></script>
     <script src="base/blockTemplates.js"></script>
     <script src="data/tags.js"></script>
+    <script src="data/views.js"></script>
     
     <script src="js/blocks.js"></script>
     
