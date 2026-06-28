@@ -33,6 +33,11 @@ window.TAG_REGISTRY = {
     "type:AT Weapon": {
         label: "Anti-Tank Weapon",
         category: "Type"
+    },
+
+    "type:modlist": {
+        label: "Mod List",
+        category: "Type"
     }
 
 };

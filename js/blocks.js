@@ -545,6 +545,63 @@ const BLOCKS = {
             </section>
         `;
 
+    },
+
+    button(block, pageName) {
+
+        const width =
+            block.width || "auto";
+    
+        const image =
+    
+            block.image
+    
+            ? (
+                block.image.startsWith("/")
+                    ? block.image.slice(1)
+                    : `data/${pageName}/${block.image}`
+            )
+    
+            : null;
+    
+        const content =
+    
+            image
+    
+            ? `
+                <img
+                    src="${image}"
+                    alt="${block.text || ""}"
+                >
+            `
+    
+            : formatText(
+                block.text || "Button"
+            );
+    
+        return `
+            <section class="block">
+    
+                <a
+                    class="block-button"
+                    href="${block.url || "#"}"
+    
+                    style="width:${width};"
+    
+                    ${
+                        block.download
+                            ? `download="${block.download}"`
+                            : ""
+                    }
+                >
+    
+                    ${content}
+    
+                </a>
+    
+            </section>
+        `;
+    
     }
 
 };

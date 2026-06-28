@@ -1,50 +1,98 @@
-/* =====================================
-   Variables
-===================================== */
-
 :root {
 
-    /* Layout */
+    /* =====================================
+       Layout
+    ===================================== */
 
     --content-width: 1300px;
     --page-width: 1600px;
 
     --space-xs: 4px;
     --space-sm: 8px;
-    --space-md: 12px;
-    --space-lg: 24px;
-    --space-xl: 32px;
+    --space-md: 16px;
+    --space-lg: 32px;
+    --space-xl: 56px;
 
-    /* Borders */
+    /* =====================================
+       Borders
+    ===================================== */
 
     --border-width: 1px;
-    --border-radius: 8px;
-
-    /* Colors */
-
-    --color-bg: #141414;
-    --color-bg-secondary: #1d1d1d;
-    --color-bg-tertiary: #252525;
+    --border-radius: 0px;
 
     --color-border: #303030;
+    --color-border-light: #3b3b3b;
 
-    --color-text: #e6e6e6;
-    --color-text-muted: #a0a0a0;
+    /* =====================================
+       Colors
+    ===================================== */
 
-    --color-link: #6fa8ff;
+    --color-bg: #131313;
+    --color-bg-secondary: #1b1b1b;
+    --color-bg-tertiary: #232323;
 
-    --color-accent: #4d8dff;
+    --color-text: rgb(249, 246, 239);
+    --color-text-muted: #c5c2bb;
 
-    /* Grid */
+    --color-link: #d8c453;
+    --color-accent: #d8c453;
+    --color-accent-dark: #592625;
 
-    --grid-card-size: 260px;
+    --color-overlay: rgba(8, 8, 8, 0.72);
+
+    /* =====================================
+       Motion
+    ===================================== */
+
+    --transition-fast: 120ms ease;
+    --transition-normal: 180ms ease;
+
+    --hover-lift: translateY(-1px);
+
+    /* Shared transition */
+    --transition: var(--transition-fast);
+
+    /* =====================================
+       Grid
+    ===================================== */
+
     --grid-gap: 16px;
 
-    /* TOC */
+    --grid-transition: 140ms ease;
+
+    --grid-placard-bg: rgba(10, 10, 10, 0.92);
+    --grid-placard-text: var(--color-text);
+    --grid-placard-muted: var(--color-text-muted);
+    --grid-placard-padding: var(--space-lg);
+
+    --grid-title-size: 15px;
+    --grid-meta-size: 12px;
+    --grid-desc-size: 12px;
+
+    --grid-meta-spacing: 0.08em;
+
+    --grid-image-scale-hover: 1.01;
+
+    /* =====================================
+       Typography
+    ===================================== */
+
+    --font-label: 14px;
+    --font-title: 16px;
+    --font-meta: 11px;
+
+    --font-spacing-label: 0.04em;
+    --font-spacing-meta: 0.06em;
+
+    --grid-title-weight: 500;
+    --grid-meta-weight: 400;
+
+    /* =====================================
+       TOC
+    ===================================== */
 
     --toc-width: 150px;
     --toc-gap: 30px;
-
 }
 
 
@@ -60,7 +108,16 @@ body {
 
     color: var(--color-text);
 
-    font-family: Arial, sans-serif;
+    font-family:
+        "Inter",
+        Arial,
+        sans-serif;
+
+    line-height: 1.6;
+
+    text-rendering: optimizeLegibility;
+
+    -webkit-font-smoothing: antialiased;
 
 }
 
@@ -93,6 +150,29 @@ body {
     max-width: var(--page-width);
 
     margin: auto;
+
+}
+
+/* =====================================
+   Buttons
+===================================== */
+button,
+a,
+.tag,
+.active-tag,
+.grid-item {
+
+    transition:
+
+        background var(--transition-fast),
+
+        border-color var(--transition-fast),
+
+        color var(--transition-fast),
+
+        opacity var(--transition-fast),
+
+        transform var(--transition-fast);
 
 }
 
@@ -308,11 +388,19 @@ a {
 
     color: var(--color-link);
 
+    text-decoration: none;
+
+    transition:
+
+        color var(--transition-fast),
+
+        opacity var(--transition-fast);
+
 }
 
 a:hover {
 
-    text-decoration: underline;
+    color: var(--color-text);
 
 }
 
@@ -396,6 +484,56 @@ a:hover {
 
 
 /* =====================================
+   Button
+===================================== */
+
+.block-button {
+
+    display: inline-flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    box-sizing: border-box;
+
+    min-height: 42px;
+
+    padding: 0 20px;
+
+    background: var(--color-bg-secondary);
+
+    border: 1px solid var(--color-border);
+
+    border-radius: var(--border-radius);
+
+    color: var(--color-text);
+
+    text-decoration: none;
+
+    cursor: pointer;
+
+    transition: background 0.15s;
+
+}
+
+.block-button:hover {
+
+    background: var(--color-bg-tertiary);
+
+}
+
+.block-button img {
+
+    display: block;
+
+    width: 100%;
+    height: auto;
+
+}
+
+
+/* =====================================
    Grid Layout
 ===================================== */
 
@@ -421,12 +559,31 @@ a:hover {
 
     display: grid;
 
-    grid-template-columns:
-        repeat(4, 1fr);
-
     gap: var(--grid-gap);
 
     padding: var(--space-lg);
+
+}
+
+/* =====================================
+   Standard Grid
+===================================== */
+
+#grid.standard {
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+}
+
+/* =====================================
+   Large Grid
+===================================== */
+
+#grid.large {
+
+    grid-template-columns:
+        repeat(3, 1fr);
 
 }
 
@@ -435,92 +592,128 @@ a:hover {
    Grid Cards
 ===================================== */
 
+/* Grid Item Base */
+
 .grid-item {
-
     position: relative;
-
+    cursor: pointer;
     overflow: hidden;
 
-    cursor: pointer;
+    display: flex;
+    flex-direction: column;
 
-    background: transparent;
+    gap: var(--space-xs);
 
 }
 
-.grid-item img {
+/* Artifact Image */
 
+.grid-media {
+    position: relative;
     width: 100%;
-
     aspect-ratio: 1 / 1;
+    overflow: hidden;
+}
 
+.grid-media img {
+    width: 100%;
+    height: 100%;
     object-fit: cover;
 
-    display: block;
-
+    transform: scale(1);
+    transition: transform var(--grid-transition), opacity var(--grid-transition);
 }
 
-.grid-overlay {
+/* Museum Placard */
 
+.grid-placard {
     position: absolute;
-
     inset: 0;
 
     display: flex;
-
     flex-direction: column;
+    justify-content: center;
 
-    justify-content: flex-end;
+    padding: var(--grid-placard-padding);
 
-    align-items: flex-start;
+    background: var(--grid-placard-bg);
+    padding: var(--space-lg);
 
-    padding: 16px;
-
-    background:
-        linear-gradient(
-            rgba(0,0,0,0),
-            rgba(0,0,0,0.15) 20%,
-            rgba(0,0,0,0.45) 45%,
-            rgba(0,0,0,0.75) 70%,
-            rgba(0,0,0,0.95) 100%
-        );
+    color: var(--grid-placard-text);
 
     opacity: 0;
+    transform: translateY(6px);
 
-    transition: opacity 0.15s ease;
-
+    transition:
+        opacity var(--grid-transition),
+        transform var(--grid-transition);
 }
 
-.grid-item:hover .grid-overlay {
+/* Title */
 
-    opacity: 1;
-
+.grid-placard-title {
+    font-size: var(--font-title);
+    font-weight: var(--grid-title-weight);
+    letter-spacing: var(--font-spacing-label);
+    margin-bottom: var(--space-sm);
+    color: var(--grid-placard-text);
 }
 
+/* Tags */
 
-/* =====================================
-   Grid Title
-===================================== */
-
-.grid-title {
-
-    font-weight: bold;
-
-    font-size: 1rem;
-
-    text-align: left;
-
-}
-
-
-/* =====================================
-   Grid Tags
-===================================== */
-
-.grid-tags {
+.grid-placard-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
 
     margin-bottom: var(--space-sm);
 
+    opacity: 0.75;
 }
+
+.grid-placard .tag {
+    font-size: var(--font-meta);
+    letter-spacing: var(--font-spacing-meta);
+    padding: 2px 6px;
+}
+
+
+/* Description */
+
+.grid-placard-desc {
+    font-size: var(--grid-desc-size);
+    color: var(--grid-placard-muted);
+    line-height: 1.5;
+
+    max-height: 6em;
+    overflow: hidden;
+}
+
+/* Hover State */
+
+.grid-media img {
+    transition:
+        opacity 160ms ease,
+        transform 160ms ease;
+}
+
+.grid-placard {
+    transition:
+        opacity 160ms ease,
+        transform 160ms ease;
+}
+
+.grid-item:hover .grid-media img {
+    opacity: 0.05;
+    transform: scale(1.015);
+}
+
+.grid-item:hover .grid-placard {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Grid Tags */
 
 .tag {
 
@@ -552,35 +745,93 @@ a:hover {
 /* =====================================
    Search
 ===================================== */
+/* Search Container */
 
-#search-container {
+#search-box {
 
-    max-width: var(--content-width);
+    display: flex;
 
-    margin: var(--space-lg) auto;
+    align-items: center;
 
-    position: relative;
+    gap: 10px;
 
-}
+    padding: 0 14px;
 
-#search {
-
-    width: 100%;
-
-    box-sizing: border-box;
-
-    padding: 12px;
-
-    font-size: 16px;
+    height: 48px;
 
     background: var(--color-bg-secondary);
 
     border: 1px solid var(--color-border);
 
-    color: var(--color-text);
+    border-radius: var(--border-radius);
+
+    transition:
+        border-color var(--transition-fast),
+        background var(--transition-fast);
+
+}
+/* Active */
+
+#search-box:focus-within {
+
+    border-color: var(--color-accent);
 
 }
 
+
+/* Search Input */
+
+#search {
+
+    flex: 1;
+
+    min-width: 0;
+
+    border: none;
+
+    outline: none;
+
+    background: transparent;
+
+    color: var(--color-text);
+
+    font: inherit;
+
+    padding: 0;
+
+}
+
+/* Placeholder */
+
+#search::placeholder {
+
+    color: var(--color-text-muted);
+
+    opacity: .7;
+
+}
+
+#search-tags {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    margin-left: auto;
+
+    overflow-x: auto;
+
+    scrollbar-width: none;
+
+}
+
+#search-tags::-webkit-scrollbar {
+
+    display: none;
+
+}
 
 /* =====================================
    Tag Menu
@@ -621,19 +872,38 @@ a:hover {
     display: block;
 }
 
+/* Tag Groups */
+
 .tag-group {
 
-    margin-bottom: 12px;
+    flex: 1;
+
+    min-width: 180px;
+
 }
+
+.tag-group + .tag-group {
+
+    border-top: 1px solid var(--color-border);
+
+}
+
+/* Category */
 
 .tag-group-title {
 
-    font-weight: bold;
-    padding: 6px 8px;
+    padding: 0 16px 10px;
 
-    cursor: default;
+    font-size: 11px;
 
-    color: var(--color-text);
+    font-weight: 600;
+
+    letter-spacing: .12em;
+
+    text-transform: uppercase;
+
+    color: var(--color-text-muted);
+
 }
 
 .tag-group-items {
@@ -646,46 +916,61 @@ a:hover {
     display: block;
 }
 
+/* Tag */
+
 .menu-tag {
 
     display: block;
-    padding: 6px 8px;
+
+    padding: 5px 16px;
+
+    color: var(--color-text);
 
     cursor: pointer;
 
-    color: var(--color-text-muted);
 }
 
 .menu-tag:hover {
-    background: var(--color-bg-tertiary);
-    color: var(--color-text);
+
+    background: rgba(216,196,83,.08);
+
 }
 
 /* =====================================
    Active Tags
 ===================================== */
 
-#active-tags {
-
-    display: flex;
-
-    flex-wrap: wrap;
-
-    gap: var(--space-sm);
-
-    margin-top: 12px;
-
-}
+/* Search Tags */
 
 .active-tag {
 
-    background: var(--color-bg-tertiary);
+    display: inline-flex;
 
-    padding: 4px 10px;
+    align-items: center;
+
+    gap: 6px;
+
+    padding: 5px 10px;
+
+    background: #202020;
+
+    color: var(--color-text);
+
+    font-size: 13px;
+
+    white-space: nowrap;
 
     cursor: pointer;
 
-    color: var(--color-text);
+    transition:
+        background var(--transition-fast),
+        color var(--transition-fast);
+
+}
+
+.active-tag:hover {
+
+    background: var(--color-accent-dark);
 
 }
 
@@ -700,21 +985,26 @@ a:hover {
    Tag Suggestions / Browser
 ===================================== */
 
-#tag-suggestions {
+/* Search Popup */
 
-    display: none;
+/* Search Popup */
+
+#tag-suggestions {
 
     position: absolute;
 
-    top: 100%;
+    top: calc(100% + 8px);
+
     left: 0;
     right: 0;
 
-    margin-top: 4px;
+    display: none;
 
     background: var(--color-bg-secondary);
 
     border: 1px solid var(--color-border);
+
+    overflow: hidden;
 
     z-index: 100;
 
@@ -724,11 +1014,13 @@ a:hover {
    Browse Layout
 ----------------------------- */
 
+/* Categories */
+
 .tag-browser {
 
     display: flex;
 
-    min-height: 320px;
+    align-items: flex-start;
 
 }
 
@@ -1016,15 +1308,16 @@ a:hover {
 
     max-width: var(--content-width);
 
-    margin: 24px auto;
+    margin: 48px auto 36px;
 
     display: flex;
 
     flex-direction: column;
 
-    gap: 16px;
+    gap: 18px;
 
 }
+
 
 .header-top {
 
@@ -1042,15 +1335,17 @@ a:hover {
 
     align-items: center;
 
-    gap: 12px;
+    gap: 14px;
 
     color: var(--color-text);
 
     text-decoration: none;
 
-    font-size: 22px;
+    font-size: 26px;
 
-    font-weight: bold;
+    font-weight: 600;
+
+    letter-spacing: 0.04em;
 
     white-space: nowrap;
 
@@ -1076,24 +1371,41 @@ a:hover {
 
     display: flex;
 
-    gap: 20px;
+    gap: 28px;
+
+    align-items: center;
 
 }
 
 .header-links a {
 
-    color: var(--color-text-muted);
+    font-size: 12px;
 
-    text-decoration: none;
+    text-transform: uppercase;
+
+    letter-spacing: .12em;
+
+    font-weight: 500;
+
+    color: var(--color-text);
+
+    opacity: .55;
 
 }
 
 .header-links a:hover {
 
-    color: var(--color-text);
+    opacity: .9;
 
 }
 
+.header-links a.active {
+
+    opacity: 1;
+
+    color: var(--color-accent);
+
+}
 
 /* =====================================
    Overlay

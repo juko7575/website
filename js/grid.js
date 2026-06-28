@@ -7,9 +7,10 @@ const searchInput =
     document.getElementById("search");
 
 let ALL_ITEMS = [];
+let CURRENT_VIEW = "antiTank";
 
 const activeTagsContainer =
-    document.getElementById("active-tags");
+    document.getElementById("search-tags");
 
 let ACTIVE_TAGS = [];
 
@@ -38,6 +39,20 @@ const overlayTOC =
     document.getElementById(
         "overlay-toc"
     );
+
+function showSuggestions() {
+
+    suggestionsContainer.style.display =
+        "block";
+
+}
+
+function hideSuggestions() {
+
+    suggestionsContainer.style.display =
+        "none";
+
+}
 
     
 
@@ -134,7 +149,7 @@ function renderSuggestions(query) {
 
         `;
 
-        suggestionsContainer.style.display = "block";
+        showSuggestions();
 
         return;
 
@@ -201,22 +216,73 @@ function renderSuggestions(query) {
 
         `).join("");
 
-    suggestionsContainer.style.display =
+        if (matches.length) {
 
-        matches.length
-            ? "block"
-            : "none";
+            showSuggestions();
+        
+        }
+        
+        else {
+        
+            hideSuggestions();
+        
+        }
+
+}
+
+async function setView(viewId) {
+
+    const view =
+        window.VIEWS[viewId];
+
+    if (!view)
+        return;
+
+    CURRENT_VIEW =
+        viewId;
+    
+        document
+        .querySelectorAll(".view-link")
+        .forEach(link => {
+    
+            link.classList.toggle(
+                "active",
+                link.dataset.view === viewId
+            );
+    
+        });
+
+    ALL_ITEMS =
+        view.entities;
+
+    gridContainer.className =
+        view.layout;
+
+    ACTIVE_TAGS = [];
+
+    renderActiveTags();
+
+    searchInput.value = "";
+
+    hideSuggestions();
+
+ 
+    await renderGrid("");
 
 }
 
 async function loadGrid() {
 
     ALL_ITEMS =
-        window.ENTITIES;
+    window.VIEWS[
+        CURRENT_VIEW
+    ].entities;
 
     await preloadMeta();
 
-    await renderGrid("");
+    await setView(
+        CURRENT_VIEW
+    );
 
     searchInput.addEventListener(
         "focus",
@@ -298,18 +364,23 @@ function getTagInfo(tagId) {
 function renderActiveTags() {
 
     activeTagsContainer.innerHTML =
+
         ACTIVE_TAGS.map(tag => {
 
             const info =
                 getTagInfo(tag);
 
             return `
+
                 <span
                     class="active-tag"
                     data-tag="${tag}"
                 >
-                    ${info.label}
+
+                    ${info.label} ×
+
                 </span>
+
             `;
 
         }).join("");
@@ -425,26 +496,28 @@ async function loadCard(id) {
     const imagePath =
         `${basePath}/${image}`;
 
-    return `
+        return `
         <div
             class="grid-item"
             data-page="${id}"
         >
-
-            <img src="${imagePath}">
-
-            <div class="grid-overlay">
-
-                <div class="grid-title">
+    
+            <div class="grid-media">
+                <img src="${imagePath}">
+            </div>
+    
+            <div class="grid-placard">
+    
+                <div class="grid-placard-title">
                     ${title}
                 </div>
-
-                <div class="grid-tags">
+    
+                <div class="grid-placard-tags">
                     ${tags.map(tag => {
-
+    
                         const info =
                             getTagInfo(tag);
-                    
+    
                         return `
                             <span
                                 class="tag"
@@ -453,12 +526,16 @@ async function loadCard(id) {
                                 ${info.label}
                             </span>
                         `;
-                    
+    
                     }).join("")}
                 </div>
-
+    
+                <div class="grid-placard-desc">
+                    Lorem ipsum dolor sit amet, museum-style description placeholder.
+                </div>
+    
             </div>
-
+    
         </div>
     `;
 
@@ -639,8 +716,9 @@ document.addEventListener(
             )
         ) {
 
-            suggestionsContainer.style.display =
-                "none";
+            hideSuggestions();
+
+            return;
 
         }
 
@@ -679,6 +757,25 @@ document.addEventListener(
                         : "none";
 
             });
+
+    }
+);
+
+document.addEventListener(
+    "click",
+    async (e) => {
+
+        const link =
+            e.target.closest(".view-link");
+
+        if (!link)
+            return;
+
+        e.preventDefault();
+
+        await setView(
+            link.dataset.view
+        );
 
     }
 );

@@ -1,0 +1,83 @@
+{
+    "meta": {
+        "title": "CTB Editor Collection",
+        "tags": ["type:modlist"]
+    },
+
+    "blocks": [
+
+        {
+            "type": "columns",
+            "comment": "Two-column layout test",
+
+            "columns": [
+
+                [
+
+                    {
+                        "type": "image",
+                        "comment": "Weapon image",
+                        "src": "main.png",
+                        "caption": ""
+                    }
+
+                ],
+
+                [
+                    {
+                        "type": "title",
+                        "comment": "Main title",
+                        "text": "CTB Standard Collection"
+                    },
+
+
+                    {
+                        "type": "text",
+                        "comment": "Intro text",
+                        "text": "Our standard preset without JSRS or Blastcore and with Eden enhanced, Deformer and 3DEN Attributes Fast Load. Only to be used by Mission Makers."
+                    },
+
+                    {
+                        "type": "heading",
+                        "text": "Quick Data"
+                    },
+                    
+                    {
+                        "type": "columns",
+
+                        "weights": [3, 1],
+                    
+                        "columns": [
+                    
+                            [
+
+                                {
+                                    "type": "card",
+                                    "title": "Modlist Size",
+                                    "text": "108 Mods"
+                                }
+                            ],
+                    
+                            [
+
+                                {
+                                    "type": "button",
+                                    "image": "/assets/download.png",
+                                    "download": "modlist.html",
+                                    "width": "128px"
+                                }
+                            ]
+                    
+                        ]
+                    }
+
+
+
+                ]
+
+            ]
+
+        }
+
+    ]
+}

@@ -1,0 +1,83 @@
+{
+    "meta": {
+        "title": "CTB Standard Collection",
+        "tags": ["type:modlist"]
+    },
+
+    "blocks": [
+
+        {
+            "type": "columns",
+            "comment": "Two-column layout test",
+
+            "columns": [
+
+                [
+
+                    {
+                        "type": "image",
+                        "comment": "Weapon image",
+                        "src": "main.png",
+                        "caption": ""
+                    }
+
+                ],
+
+                [
+                    {
+                        "type": "title",
+                        "comment": "Main title",
+                        "text": "CTB Standard Collection"
+                    },
+
+
+                    {
+                        "type": "text",
+                        "comment": "Intro text",
+                        "text": "This is the standard modlist for all Combat Team Bravo players. Please download this modlist for use."
+                    },
+
+                    {
+                        "type": "heading",
+                        "text": "Quick Data"
+                    },
+                    
+                    {
+                        "type": "columns",
+
+                        "weights": [3, 1],
+                    
+                        "columns": [
+                    
+                            [
+
+                                {
+                                    "type": "card",
+                                    "title": "Modlist Size",
+                                    "text": "108 Mods"
+                                }
+                            ],
+                    
+                            [
+
+                                {
+                                    "type": "button",
+                                    "image": "/assets/download.png",
+                                    "download": "Arma 3 Preset CTB_STANDARD_06012026.html",
+                                    "width": "128px"
+                                }
+                            ]
+                    
+                        ]
+                    }
+
+
+
+                ]
+
+            ]
+
+        }
+
+    ]
+}
