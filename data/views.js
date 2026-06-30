@@ -7,7 +7,7 @@ window.VIEWS = {
         layout: "standard",
 
         entities: [
-            "panzerfaust", "bazooka", "dragon", "jav"
+            "panzerfaust", "bazooka", "dragon", "jav", "m72", "stinger", "rpg7", "m3mwaas"
         ]
 
     },

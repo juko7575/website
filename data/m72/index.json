@@ -1,21 +1,40 @@
 {
     "meta": {
-        "title": "Panzerfaust",
+        "title": "M72 Law",
         "tags": ["period:WW2", "nation:Germany", "type:AT Weapon"]
     },
 
     "blocks": [
 
         {
-            "type": "lead",
-        
-            "title": "Panzerfaust 30/60",
-        
-            "image": {
-                "src": "main.png"
-            },
-        
-            "text": "An icon of the late war, the Panzerfaust was the world's first practical disposable anti-tank weapon. Its simple arrangement of a shaped-charge warhead mounted atop a lightweight launch tube proved so successful that the same basic concept has been adopted by militaries around the world, and remains in service over eighty years later.\n\nDeveloped by Hugo Schneider AG, the Panzerfaust was designed around one goal: putting an effective anti-tank weapon into the hands of as many soldiers as possible. Its exceptionally simple and economical construction allowed it to be produced in astronomical numbers, with millions issued to German troops during the Second World War. The \"Tank Fist,\" as it became known, excelled in close-quarters combat, where its portability allowed infantry to move quickly between positions before striking enemy armor with a HEAT warhead capable of penetrating over 200 mm of steel. Against the tanks of its day, few could hope to withstand a direct hit.\n\nIn ARMA III, the Spearhead 1944 DLC features both the Panzerfaust 30 (Groß) and Panzerfaust 60 variants, each named after its effective combat range in meters."
+            "type": "columns",
+
+            "columns": [
+
+                [
+
+                    {
+                        "type": "image",
+                        "src": "main.png"
+                    }
+
+                ],
+
+                [
+
+                    {
+                        "type": "title",
+                        "text": "Panzerfaust 30/60"
+                    },
+
+                    {
+                        "type": "text",
+                        "text": "An icon of the late war, the Panzerfaust was the world's first practical disposable anti-tank weapon. Its simple arrangement of a shaped-charge warhead mounted atop a lightweight launch tube proved so successful that the same basic concept has been adopted by militaries around the world, and remains in service over eighty years later.\n\nDeveloped by Hugo Schneider AG, the Panzerfaust was designed around one goal: putting an effective anti-tank weapon into the hands of as many soldiers as possible. Its exceptionally simple and economical construction allowed it to be produced in astronomical numbers, with millions issued to German troops during the Second World War. The \"Tank Fist,\" as it became known, excelled in close-quarters combat, where its portability allowed infantry to move quickly between positions before striking enemy armor with a HEAT warhead capable of penetrating over 200 mm of steel. Against the tanks of its day, few could hope to withstand a direct hit.\n\nIn ARMA III, the Spearhead 1944 DLC features both the Panzerfaust 30 (Groß) and Panzerfaust 60 variants, each named after its effective combat range in meters.\n"
+                    }
+
+                ]
+
+            ]
         },
 
         {

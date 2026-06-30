@@ -655,20 +655,25 @@ closeButton.addEventListener(
             "open"
         );
 
-        document
-            .getElementById(
-                "overlay-content"
-            )
-            .innerHTML = "";
+        setTimeout(() => {
 
-        document
-            .getElementById(
-                "overlay-toc"
-            )
-            .innerHTML = "";
+            document
+                .getElementById(
+                    "overlay-content"
+                )
+                .innerHTML = "";
+
+            document
+                .getElementById(
+                    "overlay-toc"
+                )
+                .innerHTML = "";
+
+        }, 180);
 
     }
 );
+
 
 document.addEventListener(
     "click",

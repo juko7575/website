@@ -4,8 +4,9 @@
        Layout
     ===================================== */
 
-    --content-width: 1600px;
-    --page-width: 1800px;
+    --content-width: 1400px;
+    --overlay-width: 1300px;
+    --page-width: 500px;
 
     --space-xs: 4px;
     --space-sm: 8px;
@@ -49,15 +50,22 @@
     /* =====================================
        Motion
     ===================================== */
+    /* Motion */
 
     --transition-fast: 120ms ease;
     --transition-normal: 180ms ease;
 
+    --motion-fade-distance: 10px;
+
+    --scale-hover: 1.01;
+    --scale-overlay: .985;
+
     --hover-lift: translateY(-1px);
 
-    /* Shared transition */
     --transition: var(--transition-fast);
+    --transition-overlay: 260ms cubic-bezier(.22, .61, .36, 1);
 
+   
     --glow-accent: 0 0 10px rgba(255, 255, 255, 0.18);
     --glow-white: 0 0 10px rgba(255, 255, 255, 0.18);
     --glow-white-strong: 0 0 14px rgba(255, 255, 255, 0.22);
@@ -101,11 +109,41 @@
     --grid-meta-weight: 400;
 
     /* =====================================
-       TOC
+       Overlay Nav
     ===================================== */
+    
+    --overlay-nav-size: 42px;
+    --overlay-nav-glass: rgba(24, 24, 24, 0.58);
+    --overlay-nav-blur: 12px;
+    --overlay-nav-line: 2px;
+
+    --overlay-sidebar-offset: -100px;
+
+    --overlay-sidebar-left: calc(
+        50% +
+        (var(--content-width) / 2) +
+        var(--overlay-sidebar-offset)
+    );
 
     --toc-width: 150px;
     --toc-gap: 30px;
+    --overlayBar-offset: -50px;
+    --tocExpanded--size: 260px;
+
+    /* TOC */
+
+    --toc-line-width: 18px;
+    --toc-line-width-small: 10px;
+    --toc-line-height: 2px;
+    --toc-line-gap: var(--space-sm);
+
+    --toc-panel-width: 260px;
+    --toc-panel-padding: 12px;
+
+    --toc-glass: rgba(26, 26, 26, 0.60);
+    --toc-blur: 14px;
+
+    --toc-indent: 8px;
 
     /* =====================================
        Tag Browser
@@ -142,6 +180,8 @@
 
     --selection-width: 2px;
     --selection-length: 100%;
+
+    
 
 }
 
@@ -242,9 +282,49 @@ a,
    Title
 ===================================== */
 
+.block-title {
+
+    margin-bottom: var(--space-xl);
+
+}
+
 .block-title h1 {
 
     margin: 0;
+
+    display: inline-block;
+
+    position: relative;
+
+    font-size: 2.5rem;
+
+    font-weight: 500;
+
+    line-height: 1.05;
+
+    letter-spacing: -0.02em;
+
+    text-shadow: var(--glow-text);
+
+}
+
+.block-title h1::after {
+
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+
+    bottom: calc(var(--space-sm) * -1);
+
+    width: 100%;
+
+    height: 1px;
+
+    background: var(--color-accent);
+
+    box-shadow: var(--glow-line);
 
 }
 
@@ -253,13 +333,49 @@ a,
    Headings
 ===================================== */
 
+.block-heading {
+
+    margin-top: var(--space-xl);
+
+    margin-bottom: var(--space-lg);
+
+}
+
 .block-heading h2 {
 
     margin: 0;
 
+    display: inline-block;
+
+    position: relative;
+
+    font-weight: 500;
+
+    letter-spacing: 0.02em;
+
     padding-bottom: var(--space-sm);
 
-    border-bottom: 1px solid var(--color-border);
+    text-shadow: var(--glow-text);
+
+}
+
+.block-heading h2::after {
+
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+
+    bottom: 0;
+
+    width: 100%;
+
+    height: 1px;
+
+    background: var(--color-accent);
+
+    box-shadow: var(--glow-line);
 
 }
 
@@ -486,21 +602,33 @@ a:hover {
 
 .block-card {
 
-    background: var(--color-bg-secondary);
-
-    border: 1px solid var(--color-border);
-
-    padding: 14px;
-
     margin-bottom: var(--space-md);
 
+    padding: var(--space-md);
+
+    background: rgba(255, 255, 255, 0.025);
+
+    transition:
+        background var(--transition-fast);
+
 }
+
+/* Hover */
+
+.block-card:hover {
+
+    background: rgba(255, 255, 255, 0.04);
+
+}
+
+
+/* Header */
 
 .card-header {
 
     display: flex;
 
-    align-items: center;
+    align-items: flex-start;
 
     gap: var(--space-sm);
 
@@ -508,15 +636,50 @@ a:hover {
 
 }
 
-.card-title {
 
-    font-weight: bold;
+/* Icon */
+
+.card-icon {
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    width: 1rem;
+
+    flex-shrink: 0;
+
+    opacity: 0.55;
 
 }
 
-.card-body {
+
+/* Label */
+
+.card-title {
+
+    font-size: 0.72rem;
+
+    font-weight: 600;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.14em;
 
     color: var(--color-text-muted);
+
+}
+
+
+/* Content */
+
+.card-body {
+
+    color: var(--color-text);
+
+    line-height: 1.6;
 
 }
 
@@ -531,7 +694,6 @@ a:hover {
     margin-bottom: 0;
 
 }
-
 
 /* =====================================
    Button
@@ -1253,54 +1415,6 @@ a:hover {
    TOC
 ===================================== */
 
-.toc-active {
-
-    color: var(--color-accent);
-
-}
-
-.toc-line-level-1.toc-active {
-
-    background: var(--color-accent);
-
-}
-
-#page-viewer {
-
-    position: relative;
-
-    width: fit-content;
-
-    margin: 48px auto;
-
-}
-
-
-/* =====================================
-   Glossary / Entity Popups
-===================================== */
-
-#glossary-popup,
-#entity-popup {
-
-    position: fixed;
-
-    display: none;
-
-    width: 360px;
-
-    max-height: 70vh;
-
-    overflow-y: auto;
-
-    background: var(--color-bg-secondary);
-
-    border: 1px solid var(--color-border);
-
-    z-index: 9999;
-
-}
-
 .toc {
 
     max-height: calc(100vh - 48px);
@@ -1315,7 +1429,11 @@ a:hover {
 
     top: 50%;
 
-    left: calc(50% - 700px);
+    left: calc(
+        50% -
+        (var(--content-width) / 2) -
+        100px
+    );
 
     transform: translateY(-50%);
 
@@ -1327,9 +1445,11 @@ a:hover {
 
     position: relative;
 
-    padding-right: 50px;
-
 }
+
+/* -------------------------------------
+   Collapsed
+------------------------------------- */
 
 .toc-collapsed {
 
@@ -1337,7 +1457,13 @@ a:hover {
 
     flex-direction: column;
 
-    gap: 8px;
+    justify-content: center;
+
+    gap: var(--space-sm);
+
+    padding: var(--space-md);
+
+    margin: calc(var(--space-md) * -1);
 
     cursor: pointer;
 
@@ -1347,9 +1473,21 @@ a:hover {
 
     height: 2px;
 
-    background: #888;
+    background: var(--color-text-muted);
 
-    border-radius: 999px;
+    opacity: .45;
+
+    transition:
+
+        opacity var(--transition-fast),
+
+        background var(--transition-fast);
+
+}
+
+.toc-widget:hover .toc-line {
+
+    opacity: .9;
 
 }
 
@@ -1363,9 +1501,27 @@ a:hover {
 
     width: 10px;
 
-    margin-left: 8px;
+    margin-left: var(--space-sm);
 
 }
+
+.toc-active {
+
+    color: var(--color-text);
+
+}
+
+.toc-line.toc-active {
+
+    background: var(--color-accent);
+
+    opacity: 1;
+
+}
+
+/* -------------------------------------
+   Expanded
+------------------------------------- */
 
 .toc-expanded {
 
@@ -1377,20 +1533,18 @@ a:hover {
 
     top: 0;
 
-    width: 260px;
+    width: var(--toc-panel-width);
 
-    background: var(--color-bg-secondary);
+    padding: var(--toc-panel-padding);
 
-    border: 1px solid var(--color-border);
+    background: var(--glass-bg);
 
-    border-radius: var(--border-radius);
+    backdrop-filter: blur(var(--glass-blur));
 
-    padding: 12px;
-
-    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    box-shadow: var(--glass-shadow);
 
     transform:
-        translateX(24px)
+        translateX(-285px)
         translateY(-25%);
 
 }
@@ -1398,6 +1552,79 @@ a:hover {
 .toc-widget:hover .toc-expanded {
 
     display: block;
+
+}
+
+.toc-expanded strong {
+
+    display: block;
+
+    margin:
+        0
+        0
+        var(--space-md);
+
+    padding-bottom: var(--space-sm);
+
+    font-size: var(--font-label);
+
+    font-weight: 600;
+
+    letter-spacing: var(--font-spacing-label);
+
+    color: var(--color-text);
+
+}
+
+.toc-expanded ul {
+
+    margin: 0;
+
+    padding: 0;
+
+    list-style: none;
+
+}
+
+.toc-expanded li {
+
+    margin: 0;
+
+}
+
+.toc-expanded a {
+
+    display: block;
+
+    padding:
+
+        var(--space-sm)
+
+        var(--space-md);
+
+    color: var(--color-text-muted);
+
+    text-decoration: none;
+
+    transition:
+
+        background var(--transition-fast),
+
+        color var(--transition-fast);
+
+}
+
+.toc-expanded a:hover {
+
+    background: var(--color-bg-tertiary);
+
+    color: var(--color-text);
+
+}
+
+.toc-expanded .toc-active a {
+
+    color: var(--color-text);
 
 }
 
@@ -1655,21 +1882,33 @@ a:hover {
 
     inset: 0;
 
-    display: none;
+    display: block;
 
-    z-index: 5000;
+    visibility: hidden;
 
-}
+    opacity: 0;
+
+    pointer-events: none;
+
+    transition:
+        opacity 0.5s linear,
+        visibility 0s linear 0.25s;}
 
 #page-overlay.open {
 
-    display: block;
+    visibility: visible;
+
+    opacity: 1;
+
+    pointer-events: auto;
+
+    transition:
+        opacity var(--transition-normal);
 
 }
 
-
 /* =====================================
-   Background Blur
+   Overlay Background
 ===================================== */
 
 #page-overlay-backdrop {
@@ -1678,17 +1917,27 @@ a:hover {
 
     inset: 0;
 
-    background: rgba(0,0,0,0.65);
+    background: rgba(0,0,0,.65);
+
+    backdrop-filter: blur(0px);
+
+    transition:
+
+        backdrop-filter var(--transition-normal),
+
+        opacity var(--transition-normal);
+
+}
+
+#page-overlay.open #page-overlay-backdrop {
 
     backdrop-filter: blur(6px);
-
-    z-index: 0;
 
 }
 
 
 /* =====================================
-   Scrolling Content
+   Overlay Content
 ===================================== */
 
 #page-overlay-center {
@@ -1703,13 +1952,13 @@ a:hover {
 
     justify-content: center;
 
-    padding: 48px 0;
-
-    z-index: 1;
-
-    min-height: calc(100vh - 96px);
+   padding:
+    calc(var(--space-lg) + var(--space-sm))
+    0
+    var(--space-xl);
 
 }
+
 
 #page-overlay-content {
 
@@ -1723,24 +1972,29 @@ a:hover {
 
     box-sizing: border-box;
 
-}
+    opacity: 0;
 
-#page-overlay-center {
+    transform:
+        translateY(var(--motion-fade-distance))
+        scale(var(--scale-overlay));
 
-    position: absolute;
+    transition:
 
-    inset: 0;
+        opacity var(--transition-normal),
 
-    overflow-y: auto;
-
-    display: flex;
-
-    justify-content: center;
-
-    padding: 48px 0;
+        transform var(--transition-normal);
 
 }
 
+#page-overlay.open #page-overlay-content {
+
+    opacity: 1;
+
+    transform:
+        translateY(0)
+        scale(1);
+
+}
 
 /* =====================================
    Floating TOC
@@ -1752,11 +2006,7 @@ a:hover {
 
     top: 50%;
 
-    left: calc(
-        50% +
-        (var(--content-width) / 2) +
-        40px
-    );
+    left: var(--overlay-sidebar-left);
 
     transform: translateY(-50%);
 
@@ -1778,26 +2028,86 @@ a:hover {
     left: calc(
         50% +
         (var(--content-width) / 2) +
-        40px
+        var(--overlay-sidebar-offset)
     );
 
     width: 42px;
 
     height: 42px;
 
-    border: 1px solid var(--color-border);
+    display: flex;
 
-    border-radius: 50%;
+    align-items: center;
 
-    background: var(--color-bg-secondary);
+    justify-content: center;
+
+    padding: 0;
+
+    border: none;
+
+    background: transparent;
 
     color: var(--color-text);
 
     cursor: pointer;
 
-    z-index: 3;
+    transition:
+
+        background var(--transition-fast),
+
+        color var(--transition-fast),
+
+        box-shadow var(--transition-fast);
 
 }
+
+#page-close::after {
+
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    height: var(--overlay-nav-line);
+
+    background: var(--color-accent);
+
+    opacity: 0;
+
+    transition: opacity var(--transition-fast);
+
+}
+
+#page-close:hover {
+
+    background: var(--color-accent);
+
+
+    box-shadow: var(--glow-small);
+
+}
+
+#page-close:hover::after {
+
+    opacity: 1;
+
+}
+
+#page-close:focus-visible {
+
+    outline: none;
+
+}
+
+#page-close:focus-visible::after {
+
+    opacity: 1;
+
+}
+
 
 /* =====================================
    Mobile
