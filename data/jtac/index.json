@@ -1,0 +1,205 @@
+{
+    "meta": {
+        "title": "Joint Fires",
+        "tags": ["type:Doctrine"]
+    },
+
+    "blocks": [
+
+        {
+            "type": "lead",
+
+            "title": "CTB Joint Fires Document",
+
+            "image": {
+                "src": "main.png"
+            },
+
+            "text": "*In war, the plan is key. Each role, a crucial duty. The JFO calls, the pilot flies. The gunner aims, no room for lies. But safety for our boys, the top concern. Avoiding the spot where fire burns. Together they work, a seamless dance to protect and defend.*\n\n**Disclaimer**\nThis document is a collection of information from open source material. It has been adapted for Arma 3 gameplay constraints, player limitations, and mission balance considerations.\n\n**Introduction**\nThis document provides standardised knowledge for coordinating Joint Fires during CTB mission nights. It covers procedures, roles, and communication standards used by JFO and JTAC personnel."
+        },
+
+        {
+            "type": "collapsible",
+            "title": "1. Role Overview and Responsibilities",
+
+            "blocks": [
+                {
+                    "type": "text",
+                    "text": "Joint Fires coordination involves multiple roles including JTAC, JFO, and gunnery assets. Each role contributes to targeting accuracy and mission effectiveness."
+                },
+
+                {
+                    "type": "text",
+                    "text": "These roles rely on structured communication protocols and correct use of procedural terminology to ensure precision effects on target."
+                }
+            ]
+        },
+
+        {
+            "type": "collapsible",
+            "title": "2. Training and Currency Requirements",
+
+            "blocks": [
+                {
+                    "type": "text",
+                    "text": "This document aims to provide members of CTB with the standardised knowledge to use when employed to coordinate Joint Fires during CTB Mission Nights. All members can refer back to this reference material when unsure of a certain process. Coordinating Joint Fires is accompanied by multiple acronyms and ratel procedures that must be understood and employed correctly for precise and accurate Effects. The proper coordination of Joint Fires is an extremely satisfying experience to take part in, you will play a large role in creating enjoyable moments for your fellow members to watch in awe from a distance or close range when you bring a gun run onto an enemy position right in front of them."
+                }
+            ]
+        },
+
+        {
+            "type": "collapsible",
+            "title": "4. Glossary",
+
+            "blocks": [
+                {
+                    "type": "glossary_grid",
+                    "title": "Fires & Tactical Glossary",
+                    "items": [
+                      { "key": "jfo" },
+                      { "key": "jtac" },
+                      { "key": "gpo" },
+                      { "key": "fm" },
+                      { "key": "gr" },
+                      { "key": "alt" },
+                      { "key": "dc" },
+                      { "key": "vt" },
+                      { "key": "amc" },
+                      { "key": "lz" },
+                      { "key": "isr" },
+                      { "key": "nai" },
+                      { "key": "he" },
+                      { "key": "wp" },
+                      { "key": "smk" },
+                      { "key": "illum" },
+                      { "key": "ip" },
+                  
+                      { "key": "fires-net" },
+                      { "key": "at-my-command" },
+                      { "key": "cancell-at-my-command" },
+                      { "key": "repeat" },
+                      { "key": "check-fire" },
+                      { "key": "cancel-check-fire" },
+                      { "key": "fire" },
+                      { "key": "cleared-hot" },
+                      { "key": "msr" },
+                      { "key": "asr" },
+                      { "key": "lase-lasing" },
+                      { "key": "rest" },
+                      { "key": "cancel-rest" },
+                      { "key": "continuous-fire" },
+                      { "key": "gridref" }
+                    ]
+                }
+
+
+            ]
+        },
+
+        {
+            "type": "collapsible",
+            "title": "5. Joint Fires Path",
+
+            "blocks": [
+                {
+                    "type": "text",
+                    "text": "All the requirements to progress through the Joint Fires pathway as a JFO and finally to JTAC are laid out throughout this document. The Gunnery roles are also included in this document. Much of the information will also be passed onto you verbally during our practical nights where we continually work to maintain our currency and competency for this important role. Whilst you play a very important role in contributing to mission success you are also a key custodian of increasing the enjoyment and excitement that your fellow members experience during our mission nights. These responsibilities should not be taken lightly.\n\nFailure to regularly attend Joint Fires practical nights to maintain currency and competency will result in your status being downgraded until you can once again prove that you can commit to the role. \n\nPersonality fit is very important among the CTB Joint Fires Wing. We are a very small group that provides an incredibly destructive capability and is also trusted to provide timely and accurate intelligence to the Platoon Commander in support of the wider mission. We appreciate mad cunts who know when to remove the Patrick Bateman face mask of skin cleansing to become death-dealing wizards who are cool like a Dr Pepper when under extreme pressure. Controlled bloodlust is also another good way to think of our role.\n\nThere may come a time when you find that the role just isn’t for you, this will not reflect poorly on you within CTB in any way, it’s important to recognise one's limits.\n\nThe Joint Fires members will continually review any requirements for this role to ensure it stays in line with the overall goals of CTB."
+                },
+
+                {
+                    "type": "collapsible",
+                    "title": "5.1. Mission Ready Certification",
+        
+                    "blocks": [
+                        {
+                            "type": "text",
+                            "text": "**Ratel**\nAbility to adhere to the standard CTB Joint Fires RATEL procedures that will be taught to you as you progress through the pipeline by attending Joint Fires practical nights.\n\n**Battle Tracking**\nThis is your ability to passively keep tabs on the movement, and locations of friendly callsigns without having to continually ask for sitreps from the Platoon Commander.\n\n**Systems and supporting information**\nMap knowledge, plotting accurate 8-figure grids in a time-stressed environment, navigation/map to ground.\n\nKnowledge of appropriate ammunition and weapon types to employ against the most suitable targets.\n\nKnowledge of appropriate optical devices and range-finding tools and when to employ them to good effect.\n\n**Judging Distances**\nQuickly and with a high degree of accuracy gauge distances in preparation to engage targets without the aid of laser range-finding devices.\n\nQuickly gauge accurate distances using 40mml grenade launcher platforms to mark targets for fixed and rotary wing assets.\n\n\n**Targeting**\nQuickly identify enemy locations via map to ground and provide an 8-figure grid and altitude of the target in preparation for Indirect Fires.\n\n**Target Talk On’s** Concise and speedy target talk-ons using fixed and rotary wing assets to engage targets or conduct reinforcement, resupply, insertion and extraction from the AO.\n\n**Pressure**\nA demonstrated ability to remain within your chakra during moments of intense pressure and concentration. If you can’t send it without being able to back yourself then you are dead to us.\n\n**TY4S**\nAs a fun little well done, any member who successfully qualifies for Mission Ready status can choose their permanent callsign when operating in the role of JFO/JTAC. \n"
+                        }
+                        
+        
+        
+                    ]
+                },
+
+                {
+                    "type": "collapsible",
+                    "title": "5.2. SME Certification",
+        
+                    "blocks": [
+                        {
+                            "type": "text",
+                            "text": "Prepare target information and send fire mission requests and receive Shot and time of flight in two minutes or under.\n\nPrepare target information, talk fixed and rotary wing assets onto and engage a target in under 3 minutes 30 seconds.\n\nPlot an accurate 8-figure grid in 30 seconds or less.\n\nMentor and encourage the development of those members who are progressing through the Joint Fires pathway. \n\nProve that you are an absolute mad cunt(Hidden Requirement)."
+                        }
+                        
+        
+        
+                    ]
+                }
+                
+
+
+            ]
+        },
+
+        {
+            "type": "collapsible",
+            "title": "6. Indirect Fires",
+
+            "blocks": [
+                {
+                    "type": "text",
+                    "text": "Indirect Fires are any platforms such as Mortars, Artillery, and MLRS/HIMARS. \n\nThe Call for Fire is a series of radio transmissions that will pass on clear and accurate instructions to the Mortar or Gun Line. Every message sent during the Call for Fire has to be said in reply to the JFO/JTAC word for word as a way of maintaining information stays accurate and that nothing has been misheard, for example, an individual number read back wrong for a Grid Reference can have a serious detrimental impact to the conduct of a Fire Mission."
+                },
+                
+                {
+                    "type": "collapsible",
+                    "title": "6.1. GPO Update",
+        
+                    "blocks": [
+                        {
+                            "type": "text",
+                            "text": "Before the mission takes place or during initial organisation at the beginning of a mission in your role as a JFO/JTAC with access to Indirect Fires it’s important to conduct radio checks and be briefed on the capabilities of your supporting assets.\n\nConduct a radio check with the GPO for the mission. **For the love of all that is holy/herrington do this before you step out of the gate, please.**\n\nConfirm the type of piece(s) they have under their command and how many.\n\nConfirm the amount of rounds they have available to support the mission intent.\n\nConfirm the type of rounds they have available to support the mission intent."
+                        }
+                        
+        
+        
+                    ]
+                },
+
+                {
+                    "type": "collapsible",
+                    "title": "6.2. Call for Fire",
+        
+                    "blocks": [
+                        {
+                            "type": "text",
+                            "text": "Calls for fire are expected to follow the standard structure to allow for efficient communication:\n1. C/S and Fire Mission type (Danger Close, Screening, Illumination, Marking)\n\n2. Target Grid\n\n3. Target Description\n\n4. Technical e.g. HE in ADJ, SMOKE in EFFECT, VT(Variable Time or Air Burst for the unwashed)"
+                        }
+                        
+        
+        
+                    ]
+                },
+                {
+                    "type": "collapsible",
+                    "title": "6.3. Readbacks",
+        
+                    "blocks": [
+                        {
+                            "type": "text",
+                            "text": "If you are crewing a Mortar or Artillery piece or acting as the GPO/Mortar SL. Ensure you read back all transmissions sent to you as part of the call for fire.\n\nFor the below example, the JFO/JTAC will be coloured red and the GPO/Mortar SL will be coloured green."
+                        }
+                        
+        
+        
+                    ]
+                }
+
+            ]
+        }
+
+
+
+
+    ]
+}

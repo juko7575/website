@@ -3,4 +3,5 @@ window.ENTITIES = [
     "jav",
     "dragon",
     "bazooka",
+    "light_anti_tank"
 ];

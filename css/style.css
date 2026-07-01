@@ -284,8 +284,8 @@ a,
 
 .block-title {
 
-    margin-bottom: var(--space-xl);
-
+/*     margin-bottom: var(--space-xl);
+ */
 }
 
 .block-title h1 {
@@ -337,7 +337,7 @@ a,
 
     margin-top: var(--space-xl);
 
-    margin-bottom: var(--space-lg);
+    margin-bottom: var(--space-md);
 
 }
 
@@ -381,17 +381,128 @@ a,
 
 
 /* =====================================
-   Text
+   Collapsible Base
 ===================================== */
 
-.block-text p {
-
-    margin: 0;
-
-    line-height: 1.7;
-
+.collapsible {
+    margin-bottom: var(--space-lg);
 }
 
+/* indentation system (same as before, updated selector) */
+.collapsible[data-level="1"] {
+    margin-left: 0;
+}
+
+.collapsible[data-level="2"] {
+    margin-left: var(--space-md);
+}
+
+.collapsible[data-level="3"] {
+    margin-left: calc(var(--space-md) * 2);
+}
+
+.collapsible[data-level="4"] {
+    margin-left: calc(var(--space-md) * 3);
+}
+
+/* subtle hierarchy fading */
+.collapsible[data-level="2"] .collapsible-header {
+    opacity: 0.92;
+}
+
+.collapsible[data-level="3"] .collapsible-header {
+    opacity: 0.85;
+    font-size: 0.95em;
+}
+
+/* =====================================
+   Header
+===================================== */
+
+.collapsible-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    cursor: pointer;
+    user-select: none;
+
+    padding-bottom: var(--space-sm);
+    border-bottom: 1px solid var(--color-border);
+
+    font-size: 1.4rem;
+    font-weight: 500;
+
+    position: relative;
+    padding-right: 24px;
+}
+
+
+
+.collapsible-header:hover {
+    text-shadow: var(--glow-white);
+}
+
+
+
+.collapsible-toggle {
+    font-size: 1rem;
+    color: var(--color-text-muted);
+    width: 24px;
+    text-align: right;
+}
+
+.block-collapsible[data-level="1"] { margin-left: 0; }
+
+.block-collapsible[data-level="2"] {
+    margin-left: var(--space-md);
+}
+
+.block-collapsible[data-level="3"] {
+    margin-left: calc(var(--space-md) * 2);
+}
+
+.block-collapsible[data-level="4"] {
+    margin-left: calc(var(--space-md) * 3);
+}
+
+
+/* =====================================
+   Content (default closed state)
+===================================== */
+
+.collapsible-content {
+    margin-top: var(--space-md);
+
+    overflow: hidden;
+
+    max-height: 0;
+    opacity: 0;
+
+    transform: translateY(-4px);
+
+    pointer-events: none;
+
+    transition:
+        max-height 260ms ease,
+        opacity 180ms ease,
+        transform 180ms ease;
+}
+
+/* =====================================
+   Open state
+===================================== */
+
+.collapsible.open > .collapsible-content {
+
+    max-height: 2000px;
+
+    opacity: 1;
+
+    transform: translateY(0);
+
+    pointer-events: auto;
+}
 
 /* =====================================
    Images
@@ -750,6 +861,36 @@ a:hover {
     margin-bottom: 0;
 
 }
+
+/* =====================================
+   Card Glossary
+===================================== */
+.glossary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: var(--space-md);
+}
+
+.glossary-card {
+    padding: var(--space-md);
+    background: rgba(255, 255, 255, 0.025);
+    border: 1px solid var(--color-border);
+}
+
+.glossary-card-key {
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+    letter-spacing: 0.06em;
+    color: var(--color-text);
+}
+
+.glossary-card-value {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    line-height: 1.4;
+}
+
 
 /* =====================================
    Button
@@ -1497,10 +1638,26 @@ a:hover {
 
 }
 
-.toc-widget {
+.toc-level-2 {
+    margin-left: var(--space-md);
+    opacity: 0.85;
+}
 
-    position: relative;
+.toc-level-3 {
+    margin-left: calc(var(--space-md) * 2);
+    opacity: 0.7;
+    font-size: 0.95em;
+}
 
+.toc-level-2::before,
+.toc-level-3::before,
+.toc-level-4::before {
+    color: var(--color-text-muted);
+}
+
+.toc-level-1 {
+    font-weight: 600;
+    color: var(--color-text);
 }
 
 /* -------------------------------------
@@ -1644,8 +1801,8 @@ a:hover {
 
 .toc-expanded li {
 
-    margin: 0;
-
+/*     margin: 0;
+ */
 }
 
 .toc-expanded a {
@@ -2018,9 +2175,11 @@ a:hover {
 
 #page-overlay-content {
 
+    --doc-width: var(--content-width);
+
     width: 100%;
 
-    max-width: var(--content-width);
+    max-width: var(--doc-width);
 
     min-height: calc(100vh - 96px);
 
@@ -2035,11 +2194,8 @@ a:hover {
         scale(var(--scale-overlay));
 
     transition:
-
         opacity var(--transition-normal),
-
         transform var(--transition-normal);
-
 }
 
 #page-overlay.open #page-overlay-content {
@@ -2162,6 +2318,243 @@ a:hover {
 
     opacity: 1;
 
+}
+
+
+/* =====================================
+   Wiki Links
+===================================== */
+
+.wiki-link {
+
+    color: inherit;
+
+    cursor: pointer;
+
+    text-decoration: none;
+
+    border-bottom:
+
+        1px dotted
+
+        color-mix(
+            in srgb,
+            var(--color-text-muted) 70%,
+            transparent
+        );
+
+    transition:
+
+        border-color var(--transition-fast),
+
+        color var(--transition-fast);
+
+}
+
+.wiki-link:hover {
+
+    border-bottom-color:
+
+        var(--color-accent);
+
+}
+
+/* default fallback */
+.wiki-link {
+    color: inherit;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+/* PAGE LINKS = solid underline */
+.wiki-link[data-type="page"] {
+    border-bottom: 1px solid
+        color-mix(
+            in srgb,
+            var(--color-text-muted) 70%,
+            transparent
+        );
+}
+
+/* GLOSSARY LINKS = dotted underline */
+.wiki-link[data-type="glossary"] {
+    border-bottom: 1px dotted
+        color-mix(
+            in srgb,
+            var(--color-text-muted) 70%,
+            transparent
+        );
+}
+
+/* hover effect for both */
+.wiki-link:hover {
+    border-bottom-color: var(--color-accent);
+}
+
+
+/* =====================================
+   Entity Popup
+===================================== */
+
+#entity-popup {
+
+    position: fixed;
+
+    display: none;
+
+    width: 340px;
+    max-width: 90vw;
+
+    padding: var(--space-md);
+
+    background:
+        color-mix(
+            in srgb,
+            var(--color-bg-secondary) 88%,
+            transparent
+        );
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    border-radius: var(--border-radius);
+
+    box-shadow: var(--shadow-soft);
+
+    overflow: hidden;
+
+    z-index: 1000;
+
+    opacity: 0;
+
+    transform:
+        translateY(4px)
+        scale(0.98);
+
+    pointer-events: none;
+
+    transition:
+        opacity var(--transition-normal),
+        transform var(--transition-normal);
+
+}
+
+#entity-popup.visible {
+
+    opacity: 1;
+
+    transform:
+        translateY(0)
+        scale(1);
+
+    pointer-events: auto;
+
+}
+
+/* =====================================
+   Glossary Popup
+===================================== */
+
+.glossary-popup {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 4px;
+
+}
+
+.glossary-popup img {
+
+    width: 100%;
+
+    display: block;
+
+    border-radius: calc(var(--border-radius) * 0.75);
+
+    margin-bottom: 6px;
+
+}
+
+.glossary-popup-title {
+
+    font-size: 0.82rem;
+
+    font-weight: 600;
+
+    line-height: 1.2;
+
+    color: var(--color-text);
+
+}
+
+.glossary-popup-text {
+
+    font-size: 0.76rem;
+
+    line-height: 1.45;
+
+    color: var(--color-text-muted);
+
+}
+
+.preview-popup-description {
+
+    display: -webkit-box;
+
+    -webkit-box-orient: vertical;
+
+    -webkit-line-clamp: 5;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+}
+
+.preview-popup-glossary {
+    display: flex;
+    flex-direction: column;
+    max-width: 320px;
+}
+
+
+
+/* =====================================
+   Preview Popup
+===================================== */
+
+.preview-popup {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+}
+
+.preview-popup-image {
+    width: 100px;
+    height: 100px;
+    flex: 0 0 64px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.preview-popup-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.preview-popup-title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    line-height: 1.2;
+    margin-bottom: 4px;
+}
+
+.preview-popup-description {
+    font-size: 0.75rem;
+    line-height: 1.35;
+    color: var(--color-text-muted);
 }
 
 

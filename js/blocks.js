@@ -18,91 +18,85 @@ function createAnchor(text) {
 
 }
 
-function collectTOC(blocks) {
+function collectTOC(blocks, depth = 1) {
 
     const toc = [];
 
     const titleBlock = blocks.find(
         block => block.type === "title"
     );
-    
-    if (titleBlock) {
-    
+
+    if (titleBlock && depth === 1) {
+
         toc.push({
-    
             title: titleBlock.text,
-    
             anchor: "page-top",
-    
             level: 1
-    
         });
-    
+
     }
 
     blocks.forEach(block => {
 
         if (block.type === "heading") {
 
-            block.anchor =
-                createAnchor(
-                    block.text
-                );
+            block.anchor = createAnchor(block.text);
 
             toc.push({
-
                 title: block.text,
-            
                 anchor: block.anchor,
-            
-                level: 1
-            
+                level: depth
             });
 
         }
 
-        if (
-            block.type === "card" &&
-            block.toc === true
-        ) {
-        
-            block.anchor =
-                createAnchor(
-                    block.title
-                );
-        
+        if (block.type === "collapsible") {
+
+            block.anchor = block.anchor || createAnchor(block.title);
+
             toc.push({
-        
                 title: block.title,
-        
                 anchor: block.anchor,
-        
-                level: 2
-        
+                level: depth
             });
-        
+
+            if (block.blocks && block.blocks.length > 0) {
+
+                toc.push(
+                    ...collectTOC(block.blocks, depth + 1)
+                );
+
+            }
+        }
+
+        if (block.type === "card" && block.toc === true) {
+
+            block.anchor = createAnchor(block.title);
+
+            toc.push({
+                title: block.title,
+                anchor: block.anchor,
+                level: depth + 1
+            });
+
         }
 
         if (block.type === "columns") {
 
-            block.columns.forEach(
-                column => {
+            block.columns.forEach(column => {
 
-                    toc.push(
-                        ...collectTOC(column)
-                    );
+                toc.push(
+                    ...collectTOC(column, depth)
+                );
 
-                }
-            );
+            });
 
         }
 
     });
 
     return toc;
-
 }
-
 function renderTOC(entries) {
 
     if (entries.length === 0)
@@ -230,6 +224,8 @@ async function loadPage(pageName, options = {}) {
             pageName
         );
 
+        initCollapsibles(contentElement);
+
         if (tocElement) {
 
             initializeTOCHighlighting();
@@ -246,28 +242,340 @@ async function loadPage(pageName, options = {}) {
             "<p>Failed to load page.</p>";
 
     }
+    
 
 }
 
 /* =====================================
-   Page popupper
+   Wiki Links
 ===================================== */
 function replaceEntities(text) {
 
     return text.replace(
-        /\[\[([^\]]+)\]\]/g,
-        (match, key) => {
+        /\[\[([^|\]]+)(?:\|([^\]]+))?\]\]/g,
+        (match, key, label) => {
 
-            const entity =
-                window.ENTITIES?.[key];
+            const isGlossary = !!getGlossaryEntry(key);
+            const type = isGlossary ? "glossary" : "page";
 
-            if (!entity)
-                return key;
-
-            return `<span class="entity" data-entity="${key}">${entity.title}</span>`;
-
+            return `
+                <span
+                    class="wiki-link"
+                    data-key="${key}"
+                    data-type="${type}"
+                >
+                    ${label || key}
+                </span>
+            `;
         }
     );
+}
+/* =====================================
+   Glossary Database
+===================================== */
+
+let GLOSSARY = {};
+
+async function loadGlossary() {
+
+    const response =
+        await fetch(
+            "data/glossary.json"
+        );
+
+    GLOSSARY =
+        await response.json();
+
+}
+function getGlossaryEntry(key) {
+
+    const entry = GLOSSARY?.[key];
+
+    if (!entry) return null;
+
+    return {
+        title: entry.title || key,
+        short: entry.short || "",
+        text: entry.text || ""
+    };
+}
+
+
+loadGlossary();
+
+/* =====================================
+   Popup
+===================================== */
+
+const popup =
+
+    document.getElementById(
+        "entity-popup"
+    );
+
+let popupHideTimer = null;
+
+function showPopup(html, target) {
+
+    popup.innerHTML =
+        html;
+
+    popup.style.display =
+        "block";
+
+    requestAnimationFrame(() => {
+
+        popup.classList.add(
+            "visible"
+        );
+
+        positionPopup(
+            target
+        );
+
+    });
+
+}
+
+
+
+function hidePopup() {
+
+    popup.classList.remove(
+        "visible"
+    );
+
+    setTimeout(() => {
+
+        popup.style.display =
+            "none";
+
+    }, 180);
+
+}
+
+function positionPopup(target) {
+
+    const rect =
+        target.getBoundingClientRect();
+
+    const popupRect =
+        popup.getBoundingClientRect();
+
+    let left =
+
+        rect.left +
+
+        rect.width / 2 -
+
+        popupRect.width / 2;
+
+    let top =
+
+        rect.top -
+
+        popupRect.height -
+
+        10;
+
+    /* Not enough room above? */
+
+    if (top < 10) {
+
+        top =
+
+            rect.bottom +
+
+            10;
+
+    }
+
+    /* Keep on screen */
+
+    left = Math.max(
+
+        10,
+
+        Math.min(
+
+            left,
+
+            window.innerWidth -
+
+            popupRect.width -
+
+            10
+
+        )
+
+    );
+
+    popup.style.left =
+        left + "px";
+
+    popup.style.top =
+        top + "px";
+
+}
+
+/* =====================================
+   Glossary Hover
+===================================== */
+
+document.addEventListener("mouseover", async (e) => {
+
+    const link =
+        e.target.closest(".wiki-link");
+
+    if (!link)
+        return;
+
+    const key =
+        link.dataset.key;
+
+    /* Glossary entry */
+
+    if (key in GLOSSARY) {
+
+        const entry =
+            GLOSSARY[key];
+
+        showPopup(
+
+            `
+
+                <div class="preview-popup preview-popup-glossary">
+
+                    <div class="preview-popup-content">
+
+                        <div class="preview-popup-title">
+
+                            ${entry.title}
+
+                        </div>
+
+                        <div class="preview-popup-description">
+
+                            ${formatText(entry.text)}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            `,
+
+            link
+
+        );
+
+        return;
+
+    }
+
+    /* Wiki page */
+
+    try {
+
+        const response =
+            await fetch(
+                `data/${key}/index.json`
+            );
+
+        if (!response.ok)
+            return;
+
+        const data =
+            await response.json();
+
+        const lead =
+            data.blocks.find(
+                block => block.type === "lead"
+            );
+
+        const firstText =
+            data.blocks.find(
+                block => block.type === "text"
+            );
+
+        const image =
+            data.meta?.popup_image ||
+            "main.png";
+
+        const title =
+            data.meta?.popup_title ||
+            data.meta?.title ||
+            lead?.title ||
+            key;
+
+        const description =
+            data.meta?.popup_desc ||
+            lead?.text ||
+            firstText?.text ||
+            "";
+
+        showPopup(
+
+            `
+
+                <div class="preview-popup">
+
+                    <img
+                        class="preview-popup-image"
+                        src="data/${key}/${image}"
+                        alt="${title}"
+                    >
+
+                    <div class="preview-popup-content">
+
+                        <div class="preview-popup-title">
+
+                            ${formatText(title)}
+
+                        </div>
+
+                        <div class="preview-popup-description">
+
+                            ${formatText(description)}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            `,
+
+            link
+
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+    }
+
+});
+
+document.addEventListener("mouseout", (e) => {
+
+    const link =
+        e.target.closest(".wiki-link");
+
+    if (!link)
+        return;
+
+    hidePopup();
+
+});
+
+function isGlossary(key) {
+
+    return key in GLOSSARY;
 
 }
 
@@ -467,6 +775,39 @@ const BLOCKS = {
     
     },
 
+    collapsible(block, pageName, level = 1) {
+
+        const isOpen = block.open === true;
+    
+        block.anchor = block.anchor || createAnchor(block.title);
+    
+        return `
+            <section
+                id="${block.anchor}"
+                class="collapsible ${isOpen ? "open" : ""}"
+                data-level="${level}"
+            >
+    
+                <div class="collapsible-header">
+    
+                    <div class="collapsible-title">
+                        ${formatText(block.title || "")}
+                    </div>
+    
+                    <div class="collapsible-toggle">
+                        ${isOpen ? "−" : "+"}
+                    </div>
+    
+                </div>
+    
+                <div class="collapsible-content">
+                    ${renderBlocks(block.blocks || [], pageName, level + 1)}
+                </div>
+    
+            </section>
+        `;
+    },
+
     lead(block, pageName) {
 
         const width =
@@ -584,6 +925,81 @@ const BLOCKS = {
     
     },
 
+    glossary_grid(block) {
+
+        const items = Array.isArray(block.items)
+            ? block.items
+            : Object.entries(block.items || {}).map(([key, value]) => ({
+                key,
+                ...value
+            }));
+    
+        return `
+            <section class="block block-glossary-grid">
+    
+                <div class="glossary-grid">
+    
+                    ${items.map(item => {
+    
+                        const entry =
+                            GLOSSARY?.[item.key] || {};
+    
+                        const short =
+                            item.short ?? entry.short ?? null;
+    
+                        const title =
+                            item.title ?? entry.title ?? null;
+    
+                        const text =
+                            item.text ?? entry.text ?? "";
+    
+                        let header = "";
+    
+                        if (short && title) {
+                            header = `
+                                <div class="glossary-card-key">
+                                    ${short} - ${title}
+                                </div>
+                            `;
+                        }
+    
+                        else if (short) {
+                            header = `
+                                <div class="glossary-card-key">
+                                    ${short}
+                                </div>
+                            `;
+                        }
+    
+                        else if (title) {
+                            header = `
+                                <div class="glossary-card-key">
+                                    ${title}
+                                </div>
+                            `;
+                        }
+    
+                        return `
+                            <div class="glossary-card block-card">
+    
+                                ${header}
+    
+                                <div class="glossary-card-value">
+                                    ${formatText(text)}
+                                </div>
+    
+                            </div>
+                        `;
+    
+                    }).join("")}
+    
+                </div>
+    
+            </section>
+        `;
+    },
+
+
     divider() {
 
         return `
@@ -697,21 +1113,15 @@ function expandBlockTemplates(blocks) {
 
 }
 
-function renderBlocks(
-    blocks,
-    pageName
-) {
+function renderBlocks(blocks, pageName, level = 1) {
 
     blocks = expandBlockTemplates(blocks);
-    
 
     let html = "";
 
     blocks.forEach(block => {
 
-        if (
-            block.type === "columns"
-        ) {
+        if (block.type === "columns") {
 
             html += renderColumns(
                 block,
@@ -726,23 +1136,19 @@ function renderBlocks(
 
         if (!renderer) {
 
-            console.warn(
-                "Unknown block:",
-                block.type
-            );
-
+            console.warn("Unknown block:", block.type);
             return;
         }
 
         html += renderer(
             block,
-            pageName
+            pageName,
+            level
         );
 
     });
 
     return html;
-
 }
 
 /* =====================================
@@ -860,135 +1266,21 @@ function setActiveTOC(anchor) {
 
 }
 
+function initCollapsibles(root = document) {
 
-/* =====================================
-   Glossary
-===================================== */
+    root.querySelectorAll(".collapsible-header").forEach(header => {
 
+        header.onclick = () => {
 
-/* Hover Lock */
-let activeEntityEl = null;
+            const block =
+                header.closest(".collapsible");
 
+            if (!block) return;
 
+            block.classList.toggle("open");
 
+        };
 
-let popupHideTimer = null;
-document.addEventListener("mouseover", (e) => {
-
-    const el =
-        e.target.closest(".entity");
-
-    const popup =
-        document.getElementById("entity-popup");
-
-    if (popupHideTimer) {
-        clearTimeout(popupHideTimer);
-        popupHideTimer = null;
-    }
-
-    if (!el) return;
-
-    const key =
-        el.dataset.entity;
-
-    const entity =
-        window.ENTITIES?.[key];
-
-    if (!entity) return;
-
-    showEntityPopup(entity, el);
-
-});
-
-document.addEventListener("mousemove", (e) => {
-
-    const popup =
-        document.getElementById("entity-popup");
-
-    if (!popup) return;
-
-    const rect =
-        popup.getBoundingClientRect();
-
-    const insidePopup =
-        e.clientX >= rect.left &&
-        e.clientX <= rect.right &&
-        e.clientY >= rect.top &&
-        e.clientY <= rect.bottom;
-
-    const el =
-        e.target.closest(".entity");
-
-    const insideEntity =
-        !!el;
-
-    if (insidePopup || insideEntity) {
-
-        if (popupHideTimer) {
-            clearTimeout(popupHideTimer);
-            popupHideTimer = null;
-        }
-
-        return;
-    }
-
-    if (!popupHideTimer) {
-
-        popupHideTimer = setTimeout(() => {
-
-            popup.style.display = "none";
-
-        }, 150);
-
-    }
-
-});
-
-
-document.addEventListener("click", (e) => {
-
-    const el =
-        e.target.closest(".entity");
-
-    if (!el) return;
-
-    const key =
-        el.dataset.entity;
-
-    const entity =
-        window.ENTITIES?.[key];
-
-    if (!entity) return;
-
-    window.location.href =
-        `page.html?page=${key}`;
-
-});
-
-function showEntityPopup(entity, target) {
-
-    const popup =
-        document.getElementById("entity-popup");
-
-    popup.style.display = "block";
-
-    const rect =
-        target.getBoundingClientRect();
-
-    popup.style.left =
-        (rect.right + 10) + "px";
-
-    popup.style.top =
-        rect.top + "px";
-
-    fetch(entity.page)
-        .then(r => r.json())
-        .then(data => {
-
-            popup.innerHTML =
-                renderBlocks(data.blocks);
-
-        });
+    });
 
 }
-

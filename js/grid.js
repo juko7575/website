@@ -786,3 +786,44 @@ document.addEventListener(
 );
 
 loadGrid();
+
+document.addEventListener("click", (e) => {
+
+    const link = e.target.closest(".wiki-link");
+
+    if (!link)
+        return;
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    const pageId = link.dataset.key;
+
+    if (!pageId)
+        return;
+
+    openPage(pageId);
+
+});
+
+document.addEventListener("click", (e) => {
+
+    const header = e.target.closest(".collapsible-header");
+
+    if (!header)
+        return;
+
+    const block = header.closest(".block-collapsible");
+
+    if (!block)
+        return;
+
+    const isOpen = block.classList.toggle("open");
+
+    const toggle = block.querySelector(".collapsible-toggle");
+
+    if (toggle) {
+        toggle.textContent = isOpen ? "−" : "+";
+    }
+
+});

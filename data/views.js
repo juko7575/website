@@ -19,7 +19,19 @@ window.VIEWS = {
         layout: "standard",
 
         entities: [
+            "jtac"
+        ]
 
+    },
+
+    doctrine: {
+
+        title: "Doctrine",
+
+        layout: "standard",
+
+        entities: [
+            "jtac"
         ]
 
     },

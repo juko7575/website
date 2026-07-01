@@ -1,0 +1,149 @@
+{
+    "jfo": {
+      "short": "JFO",
+      "title": "Joint Fires Observer",
+      "text": "Trained observer who identifies targets and coordinates fires support."
+    },
+    "jtac": {
+      "short": "JTAC",
+      "title": "Joint Terminal Attack Controller",
+      "text": "Controls close air support and terminal attack operations."
+    },
+    "gpo": {
+      "short": "GPO",
+      "title": "Gun Position Officer",
+      "text": "Responsible for overseeing indirect fire positions and operations."
+    },
+    "fm": {
+      "short": "FM",
+      "title": "Fire Mission",
+      "text": "A request for fire support on a designated target."
+    },
+    "gr": {
+      "short": "GR",
+      "title": "Grid Reference",
+      "text": "Map coordinate reference used to identify locations."
+    },
+    "alt": {
+      "short": "ALT",
+      "title": "Altitude",
+      "text": "Height above a reference level, usually sea level."
+    },
+    "dc": {
+      "short": "DC",
+      "title": "Danger Close",
+      "text": "Fire support delivered close to friendly forces."
+    },
+    "vt": {
+      "short": "VT",
+      "title": "Variable Time (Airburst)",
+      "text": "Fuze setting that detonates above ground for airburst effect."
+    },
+    "amc": {
+      "short": "AMC",
+      "title": "At My Command",
+      "text": "Fires are held until explicit authorization is given."
+    },
+    "lz": {
+      "short": "LZ",
+      "title": "Landing Zone",
+      "text": "Designated area for helicopter landing or extraction."
+    },
+    "isr": {
+      "short": "ISR",
+      "title": "Information, Surveillance, and Reconnaissance",
+      "text": "Collection of intelligence through observation and sensors."
+    },
+    "nai": {
+      "short": "NAI",
+      "title": "Named/Numbered Area of Interest",
+      "text": "Area designated for focused observation or intelligence collection."
+    },
+    "he": {
+      "short": "HE",
+      "title": "High Explosive",
+      "text": "Explosive munition designed for blast and fragmentation effects."
+    },
+    "wp": {
+      "short": "WP",
+      "title": "White Phosphorus",
+      "text": "Incendiary munition used for marking, smoke, and suppression."
+    },
+    "smk": {
+      "short": "SMK",
+      "title": "Smoke",
+      "text": "Munition used to obscure vision or mark positions."
+    },
+    "illum": {
+      "short": "ILLUM",
+      "title": "Illumination",
+      "text": "Munition that lights up an area for visibility."
+    },
+    "ip": {
+      "short": "IP",
+      "title": "Initial Point",
+      "text": "Navigation reference point used to begin an attack run."
+    },
+  
+    "fires-net": {
+      "title": "FIRES NET",
+      "text": "A dedicated frequency for JFO/JTAC and fire support coordination. Others remain off this net."
+    },
+    "at-my-command": {
+      "title": "AT MY COMMAND",
+      "text": "Fires are only executed when the controlling authority gives explicit permission."
+    },
+    "cancell-at-my-command": {
+      "title": "CANCEL AT MY COMMAND",
+      "text": "Removes hold restriction and allows supporting units to engage when ready."
+    },
+    "repeat": {
+      "title": "REPEAT",
+      "text": "Requests re-engagement of the last fire mission. Do not use for transmission repeats."
+    },
+    "check-fire": {
+      "title": "CHECK FIRE",
+      "text": "Immediate stop to all firing activity."
+    },
+    "cancel-check-fire": {
+      "title": "CANCEL CHECK FIRE",
+      "text": "Authorizes resumption of firing after a check fire order."
+    },
+    "fire": {
+      "title": "FIRE",
+      "text": "Command to engage target."
+    },
+    "cleared-hot": {
+      "title": "CLEARED HOT",
+      "text": "Authorization for air assets to engage designated targets."
+    },
+    "msr": {
+      "title": "MAIN SUPPLY ROUTE",
+      "text": "Primary logistics route used for movement of forces and supplies."
+    },
+    "asr": {
+      "title": "ALTERNATIVE SUPPLY ROUTE",
+      "text": "Secondary route used when main supply routes are unavailable."
+    },
+    "lase-lasing": {
+      "title": "LASE / LASING",
+      "text": "Use of laser designation to mark targets or locations."
+    },
+    "rest": {
+      "title": "REST",
+      "text": "Pause in operations allowing crews to recover and stand down."
+    },
+    "cancel-rest": {
+      "title": "CANCEL REST",
+      "text": "Return crews to active readiness."
+    },
+    "continuous-fire": {
+      "title": "CONTINUOUS FIRE",
+      "text": "Maintain fire until ammo is expended or a stop order is given."
+    },
+    "gridref": {
+      "short": "GRIDREF",
+      "title": "Grid Reference",
+      "text": "Map coordinate system used for precise location reporting."
+    }
+  }
