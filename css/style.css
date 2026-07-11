@@ -46,6 +46,31 @@
     --color-accent-dark: #592625;
 
     --color-overlay: #080808b8;
+    
+    /* =====================================
+    TEXT COLORS
+    ===================================== */
+
+    .text-red-light       { color: #A85A5A; }
+    .text-red-dark        { color: #6D2C2C; }
+
+    .text-orange-light    { color: #B47A4A; }
+    .text-orange-dark     { color: #7A4E28; }
+
+    .text-gold-light      { color: #C8B34E; }
+    .text-gold-dark       { color: #8E7930; }
+
+    .text-green-light     { color: #6E8453; }
+    .text-green-dark      { color: #4C6039; }
+
+    .text-blue-light      { color: #5F7994; }
+    .text-blue-dark       { color: #40566D; }
+
+    .text-purple-light    { color: #7A648E; }
+    .text-purple-dark     { color: #554268; }
+
+    .text-burgundy-light  { color: #8D586E; }
+    .text-burgundy-dark   { color: #603847; }
 
     /* =====================================
        Motion
@@ -165,7 +190,7 @@
     --glass-blur: 14px;
     --grid-image-blur: 5px;
     --grid-image-darken: .45;   
-    --surface-glass: rgba(26, 26, 26, 0.82);
+    --surface-glass: rgba(26, 26, 26, 0.19);
     --surface-glass-sidebar: rgba(255,255,255,0.02);
     --surface-glass-overlay: rgba(18,18,18,.46);
     --surface-glass-border: rgba(255,255,255,0.05);
@@ -2175,7 +2200,7 @@ a:hover {
 
 #page-overlay-content {
 
-    --doc-width: var(--content-width);
+    --doc-width: var(--overlay-width);
 
     width: 100%;
 
@@ -2590,4 +2615,6 @@ a:hover {
     padding: var(--space-lg);
 
 }
+
+
 

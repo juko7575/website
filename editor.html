@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Editor</title>
+
+    <!-- Your main site styles (important) -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Editor-only styles -->
+    <link rel="stylesheet" href="css/editor.css">
+</head>
+
+<body>
+
+<div class="editor-layout">
+
+    <!-- LEFT PANEL -->
+    <div class="editor-sidebar">
+
+        <h2>Page Editor</h2>
+
+        <div class="editor-actions">
+
+            <!-- Hidden real picker -->
+            <input
+                type="file"
+                id="folderPicker"
+                webkitdirectory
+                hidden
+            >
+
+            <button id="selectFolderBtn">
+                Select Folder
+            </button>
+
+            <button id="loadBtn">
+                Load Page
+            </button>
+
+            <button id="downloadJson">
+                Download JSON
+            </button>
+
+            <div id="selectedFolder">
+                No folder selected
+            </div>
+
+        </div>
+
+        <div id="editor-root"></div>
+
+        <div id="blockPalette" class="block-palette"></div>
+
+        <div class="editor-panel">
+
+            <div class="editor-panel-title">
+                Assets
+            </div>
+
+            <div id="assetList" class="asset-list"></div>
+
+        </div>
+
+        <div id="entity-popup"></div>
+
+        <div class="editor-panel-title">
+            History
+        </div>
+
+        <div id="historyList" class="history-list"></div>
+
+        <textarea id="jsonEditor"></textarea>
+
+    </div>
+
+    <!-- RIGHT PANEL (LIVE PREVIEW) -->
+    <div class="editor-preview" id="editor-preview">
+
+        <div id="previewRoot"></div>
+
+    </div>
+
+</div>
+
+<!-- IMPORTANT: reuse your existing system -->
+<script src="base/entityRegistry.js"></script>
+<script src="base/iconRegistry.js"></script>
+<script src="base/blockTemplates.js"></script>
+<script src="data/tags.js"></script>
+
+<script src="js/blocks.js"></script>
+
+<!-- editor logic -->
+<script src="js/editor.js"></script>
+
+</body>
+</html>

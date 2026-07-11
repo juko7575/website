@@ -1,145 +1,46 @@
 window.BLOCK_TEMPLATES = {
 
-    "card-nation": (block) => {
-
-        return {
-            ...block,
-
-            type: "card",
-
-            title: block.title || "Nation",
-
-            icon: block.icon || "🏛",
-
-            toc: block.toc ?? true
-        };
-
+    nation: {
+        title: "Nation",
+        icon: "🏛"
     },
 
-    "card-role": (block) => {
-
-        return {
-            ...block,
-
-            type: "card",
-
-            title: block.title || "Role",
-
-            icon: block.icon || "🎯",
-
-            toc: block.toc ?? true
-        };
-
+    role: {
+        title: "Role",
+        icon: "🎯"
     },
 
-    "card-period": (block) => {
-
-        return {
-            ...block,
-
-            type: "card",
-
-            title: block.title || "Period",
-
-            icon: block.icon || "📅",
-
-            toc: block.toc ?? true
-        };
-
+    period: {
+        title: "Period",
+        icon: "📅"
     },
 
-    "card-content": (block) => {
-
-        return {
-            ...block,
-
-            type: "card",
-
-            title: block.title || "From:",
-
-            toc: block.toc ?? true
-        };
-
+    content: {
+        title: "From:"
     },
 
-    "card-armament": (block) => {
-
-        return {
-            ...block,
-
-            type: "card",
-
-            title: block.title || "Armament",
-
-            icon: block.icon || "💣",
-
-            toc: block.toc ?? true
-        };
-
+    armament: {
+        title: "Armament",
+        icon: "💣"
     },
 
-    "card-weight": (block) => {
-
-        return {
-            ...block,
-
-            type: "card",
-
-            title: block.title || "Weight",
-
-            icon: block.icon || "⚖️",
-
-            toc: block.toc ?? true
-        };
-
+    weight: {
+        title: "Weight",
+        icon: "⚖️"
     },
 
-    "card-identificaiton": (block) => {
-
-        return {
-            ...block,
-
-            type: "card",
-
-            title: block.title || "Identification",
-
-            icon: block.icon || "🔎",
-
-            toc: block.toc ?? true
-        };
-
+    identification: {
+        title: "Identification",
+        icon: "🔎"
     },
 
-    "card-conflicts": (block) => {
-
-        return {
-            ...block,
-
-            type: "card",
-
-            title: block.title || "Conflicts",
-
-            icon: block.icon || "🕒",
-
-            toc: block.toc ?? true
-        };
-
+    conflicts: {
+        title: "Conflicts",
+        icon: "🕒"
     },
 
-    "card-production": (block) => {
-
-        return {
-            ...block,
-
-            type: "card",
-
-            title: block.title || "Production",
-
-            icon: block.icon || "📊",
-
-            toc: block.toc ?? true
-        };
-
+    production: {
+        title: "Production",
+        icon: "📊"
     }
-
 };

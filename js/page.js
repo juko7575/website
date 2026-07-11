@@ -23,6 +23,7 @@ else {
         document.getElementById(
             "toc-container"
         );
+
     loadPage(pageName);
 
 }

@@ -2,6 +2,8 @@ let content = null;
 
 let tocContainer = null;
 
+const isEditor = true;
+
 
 let headingCounter = 0;
 function createAnchor(text) {
@@ -97,6 +99,12 @@ function collectTOC(blocks, depth = 1) {
 
     return toc;
 }
+
+
+function editorInsertInside (){
+ return "";
+};
+
 function renderTOC(entries) {
 
     if (entries.length === 0)
@@ -172,6 +180,8 @@ function renderTOC(entries) {
 ===================================== */
 
 async function loadPage(pageName, options = {}) {
+    
+
     const {
 
         contentElement = content,
@@ -255,18 +265,11 @@ function replaceEntities(text) {
         /\[\[([^|\]]+)(?:\|([^\]]+))?\]\]/g,
         (match, key, label) => {
 
-            const isGlossary = !!getGlossaryEntry(key);
+            const entry = getGlossaryEntry?.(key);
+            const isGlossary = !!entry;
             const type = isGlossary ? "glossary" : "page";
 
-            return `
-                <span
-                    class="wiki-link"
-                    data-key="${key}"
-                    data-type="${type}"
-                >
-                    ${label || key}
-                </span>
-            `;
+            return `<span class="wiki-link" data-key="${key}" data-type="${type}">${label || key}</span>`;
         }
     );
 }
@@ -307,15 +310,18 @@ loadGlossary();
    Popup
 ===================================== */
 
-const popup =
+const popup = document.getElementById("entity-popup");
 
-    document.getElementById(
-        "entity-popup"
-    );
+if (!popup) {
+    console.warn("Missing #entity-popup element");
+}
 
 let popupHideTimer = null;
 
 function showPopup(html, target) {
+
+    if (!popup) return;
+
 
     popup.innerHTML =
         html;
@@ -669,71 +675,112 @@ function replaceIcons(text) {
 
 const BLOCKS = {
 
-    title(block) {
+    title(block, pageName, path = "") {
 
         return `
             <section
-                id="page-top"
                 class="block block-title"
+                data-block="title"
+                data-path="${path}"
             >
                 <h1>
-                    ${formatText(block.text || "")}
+                    <span data-edit="text">
+                        ${formatText(block.text || "")}
+                    </span>
                 </h1>
             </section>
         `;
-    
+
     },
 
-    heading(block) {
+    heading(block, pageName, path = "") {
 
         return `
             <section
-                id="${block.anchor || ""}"
                 class="block block-heading"
+                data-block="heading"
+                data-path="${path}"
+                id="${block.anchor || ""}"
             >
-    
                 <h2>
-                    ${formatText(block.text || "")}
+                    <span data-edit="text">
+                        ${formatText(block.text || "")}
+                    </span>
                 </h2>
-    
             </section>
         `;
-    
+
     },
 
-    text(block) {
+    text(block, pageName, path = "") {
 
         return `
-            <section class="block block-text">
-                <p>
+            <section
+                class="block block-text"
+                data-block="text"
+                data-path="${path}"
+            >
+                <div
+                    class="block-text-content"
+                    data-edit="text"
+                    tabindex="0"
+                >
                     ${formatText(block.text || "")}
-                </p>
+                </div>
             </section>
         `;
 
     },
 
-    quote(block) {
+    quote(block, pageName, path = "") {
 
         return `
-            <section class="block block-quote">
-                ${formatText(block.text || "")}
+            <section
+                class="block block-quote"
+                data-block="quote"
+                data-path="${path}"
+            >
+
+                <div class="quote-text" data-edit="text">
+                    ${formatText(block.text || "")}
+                </div>
+
+                <div class="block-children">
+                    ${editorInsertInside(block)}
+                    ${renderBlocks(block.blocks || [], pageName)}
+                </div>
+
             </section>
         `;
 
     },
 
-    callout(block) {
+    callout(block, pageName, path = "") {
 
         return `
-            <section class="block block-callout">
+            <section
+                class="block block-callout"
+                data-block="callout"
+                data-path="${path}"
+            >
 
-                <div class="callout-icon">
+                <div
+                    class="callout-icon"
+                    data-edit="icon"
+                >
                     ${block.icon || "ℹ️"}
                 </div>
 
-                <div class="callout-content">
+                <div
+                    class="callout-content"
+                    data-edit="text"
+                >
                     ${formatText(block.text || "")}
+                </div>
+
+                <div class="block-children">
+                    ${editorInsertInside(block)}
+                    ${renderBlocks(block.blocks || [], pageName)}
                 </div>
 
             </section>
@@ -741,56 +788,63 @@ const BLOCKS = {
 
     },
 
-    image(block, pageName) {
+    image(block, pageName, path = "") {
 
-        const width =
-            block.width || "100%";
-    
-        const align =
-            block.align || "center";
-    
+        console.log("Page Name: " + pageName)
+
+        const width = block.width || "100%";
+        const align = block.align || "center";
+
         return `
             <figure
                 class="block block-image image-align-${align}"
+                data-block="image"
+                data-path="${path}"
             >
-    
+
                 <img
+                    data-edit="src"
                     src="data/${pageName}/${block.src}"
                     alt="${block.caption || ""}"
                     style="width:${width};"
                 >
-    
+
+                <div class="image-resize-handle"></div>
+
                 ${
                     block.caption
-                    ? `
-                    <figcaption>
-                        ${formatText(block.caption)}
-                    </figcaption>
-                    `
-                    : ""
+                        ? `
+                        <figcaption data-edit="caption">
+                            ${formatText(block.caption)}
+                        </figcaption>
+                        `
+                        : ""
                 }
-    
+
             </figure>
         `;
-    
+
     },
 
-    collapsible(block, pageName, level = 1) {
+    collapsible(block, pageName, level = 1, path = "") {
 
-        const isOpen = block.open === true;
+        // Editor always keeps collapsibles open
+        const isOpen = true;
     
         block.anchor = block.anchor || createAnchor(block.title);
     
         return `
             <section
-                id="${block.anchor}"
                 class="collapsible ${isOpen ? "open" : ""}"
+                data-block="collapsible"
                 data-level="${level}"
+                data-path="${path}"
+                id="${block.anchor}"
             >
     
                 <div class="collapsible-header">
     
-                    <div class="collapsible-title">
+                    <div class="collapsible-title" data-edit="title">
                         ${formatText(block.title || "")}
                     </div>
     
@@ -801,393 +855,372 @@ const BLOCKS = {
                 </div>
     
                 <div class="collapsible-content">
-                    ${renderBlocks(block.blocks || [], pageName, level + 1)}
+    
+                    <div class="block-children">
+                        ${editorInsertInside(block)}
+                        ${renderBlocks(block.blocks || [], pageName)}
+                    </div>
+    
                 </div>
     
             </section>
         `;
+    
     },
 
-    lead(block, pageName) {
+    lead(block, pageName, path = "") {
 
-        const width =
-            block.image?.width || "100%";
-    
+        const width = block.image?.width || "100%";
+
         return `
-            <section class="block block-lead">
-    
+            <section
+                class="block block-lead"
+                data-block="lead"
+                data-path="${path}"
+            >
+
                 <figure class="lead-image">
-    
+
                     <img
+                        data-edit="image.src"
                         src="data/${pageName}/${block.image.src}"
                         alt="${block.image.caption || ""}"
                         style="width:${width};"
                     >
-    
+
                     ${
                         block.image.caption
-                        ? `
-                            <figcaption>
+                            ? `
+                            <figcaption data-edit="image.caption">
                                 ${formatText(block.image.caption)}
                             </figcaption>
-                        `
-                        : ""
+                            `
+                            : ""
                     }
-    
+
                 </figure>
-    
-                <section
-                    id="page-top"
-                    class="block block-title"
-                >
-                    <h1>
+
+                <section class="block block-title">
+                    <h1 data-edit="title">
                         ${formatText(block.title || "")}
                     </h1>
                 </section>
-                <div class="lead-text">
-    
+
+                <div
+                    tabindex="0"
+                    class="lead-text"
+                    data-edit="text"
+                >
                     ${formatText(block.text || "")}
-    
                 </div>
-    
-            </section>
-        `;
-    
-    },
-
-    list(block) {
-
-        return `
-            <section class="block block-list">
-
-                <ul>
-
-                    ${
-                        block.items
-                            .map(
-                                item =>
-                                    `<li>${formatText(item)}</li>`
-                            )
-                            .join("")
-                    }
-
-                </ul>
 
             </section>
         `;
 
     },
 
-    card(
-        block,
-        pageName
-    ) {
+    list(block, pageName, path = "") {
 
         return `
             <section
-                id="${block.anchor || ""}"
-                class="block-card"
+                class="block block-list"
+                data-block="list"
+                data-path="${path}"
             >
-    
-                <div class="card-header">
-    
-                    <div class="card-icon">
-                        ${formatText(block.icon || "")}
-                    </div>
-    
-                    <div class="card-title">
-                        ${formatText(block.title || "")}
-                    </div>
-    
-                </div>
-    
-                <div class="card-body">
-    
+                <ul>
                     ${
-                        block.text
-                            ? formatText(block.text)
-                            : ""
+                        (block.items || [])
+                            .map((item, i) => `
+                                <li data-edit="items.${i}">
+                                    ${formatText(item)}
+                                </li>
+                            `)
+                            .join("")
                     }
-    
-                    ${
-                        block.blocks
-                            ? renderBlocks(
-                                block.blocks,
-                                pageName
-                            )
-                            : ""
-                    }
-    
-                </div>
-    
+                </ul>
             </section>
         `;
-    
+
     },
 
-    glossary_grid(block) {
+    card(block, pageName, path = "") {
 
-        const items = Array.isArray(block.items)
-            ? block.items
-            : Object.entries(block.items || {}).map(([key, value]) => ({
-                key,
-                ...value
-            }));
+        const template =
+            window.BLOCK_TEMPLATES?.[block.template] || {};
+
+        const title =
+            block.title ||
+            template.title ||
+            "Card";
+
+        const icon =
+            block.icon ||
+            template.icon ||
+            "";
+
+        return `
+            <section
+                class="block-card"
+                data-block="card"
+                data-template="${block.template || ""}"
+                data-path="${path}"
+            >
+
+                <div class="card-header">
+
+                    <div class="card-icon">
+                        ${formatText(icon)}
+                    </div>
+
+                    <div
+                        class="card-title"
+                        data-edit="title"
+                    >
+                        ${formatText(title)}
+                    </div>
+
+                </div>
+
+                <div class="card-body">
+
+                    <div data-edit="text">
+                        ${
+                            block.text
+                                ? formatText(block.text)
+                                : ""
+                        }
+                    </div>
+
+                    <div class="block-children">
+                        ${editorInsertInside(block)}
+                        ${renderBlocks(block.blocks || [], pageName)}
+                    </div>
+
+                </div>
+
+            </section>
+        `;
+
+    },
+    
+    glossary_grid(block, pageName, path = "") {
+
+    const items = Array.isArray(block.items)
+        ? block.items
+        : Object.entries(block.items || {}).map(([key, value]) => ({
+            key,
+            ...value
+        }));
+
+    return `
+        <section
+            class="block block-glossary-grid"
+            data-block="glossary_grid"
+            data-path="${path}"
+        >
+
+            <div class="glossary-grid">
+
+                ${items.map((item, i) => {
+
+                    const entry = GLOSSARY?.[item.key] || {};
+
+                    const text = item.text ?? entry.text ?? "";
+
+                    return `
+                        <div class="glossary-card block-card">
+
+                            <div class="glossary-card-key">
+                                ${item.short || entry.short || item.key}
+                            </div>
+
+                            <div
+                                class="glossary-card-value"
+                                data-edit="items.${i}.text"
+                            >
+                                ${formatText(text)}
+                            </div>
+
+                        </div>
+                    `;
+
+                }).join("")}
+
+            </div>
+
+        </section>
+    `;
+
+    },
+
+    columns(block, pageName) {
+
+        const cols = block.columns || [];
     
         return `
-            <section class="block block-glossary-grid">
+            <section class="block block-columns">
     
-                <div class="glossary-grid">
+                <div class="columns">
     
-                    ${items.map(item => {
+                    ${cols.map((col, i) => `
     
-                        const entry =
-                            GLOSSARY?.[item.key] || {};
+                        <div
+                            class="column"
+                            style="flex:${block.weights?.[i] || 1}"
+                        >
     
-                        const short =
-                            item.short ?? entry.short ?? null;
+                            <div class="block-children">
+${editorInsertInside(block)}
     
-                        const title =
-                            item.title ?? entry.title ?? null;
-    
-                        const text =
-                            item.text ?? entry.text ?? "";
-    
-                        let header = "";
-    
-                        if (short && title) {
-                            header = `
-                                <div class="glossary-card-key">
-                                    ${short} - ${title}
-                                </div>
-                            `;
-                        }
-    
-                        else if (short) {
-                            header = `
-                                <div class="glossary-card-key">
-                                    ${short}
-                                </div>
-                            `;
-                        }
-    
-                        else if (title) {
-                            header = `
-                                <div class="glossary-card-key">
-                                    ${title}
-                                </div>
-                            `;
-                        }
-    
-                        return `
-                            <div class="glossary-card block-card">
-    
-                                ${header}
-    
-                                <div class="glossary-card-value">
-                                    ${formatText(text)}
-                                </div>
+                                ${renderBlocks(col, pageName)}
     
                             </div>
-                        `;
     
-                    }).join("")}
+                        </div>
+    
+                    `).join("")}
     
                 </div>
     
             </section>
         `;
+    
     },
 
-
-    divider() {
+    divider(block, pageName, path = "") {
 
         return `
-            <section class="block block-divider">
+            <section
+                class="block block-divider"
+                data-block="divider"
+                data-path="${path}"
+            >
                 <hr>
             </section>
         `;
 
     },
 
-    button(block, pageName) {
+    button(block, pageName, path = "") {
 
-        const width =
-            block.width || "auto";
-    
+        const width = block.width || "auto";
+
         const image =
-    
             block.image
-    
-            ? (
-                block.image.startsWith("/")
-                    ? block.image.slice(1)
-                    : `data/${pageName}/${block.image}`
-            )
-    
-            : null;
-    
+                ? (
+                    block.image.startsWith("/")
+                        ? block.image.slice(1)
+                        : `data/${pageName}/${block.image}`
+                )
+                : null;
+
         const content =
-    
             image
-    
-            ? `
-                <img
-                    src="${image}"
-                    alt="${block.text || ""}"
-                >
-            `
-    
-            : formatText(
-                block.text || "Button"
-            );
-    
+                ? `<img src="${image}" alt="${block.text || ""}">`
+                : `<span data-edit="text">${formatText(block.text || "Button")}</span>`;
+
         return `
-            <section class="block">
-    
+            <section
+                class="block"
+                data-block="button"
+                data-path="${path}"
+            >
+
                 <a
                     class="block-button"
                     href="${block.url || "#"}"
-    
                     style="width:${width};"
-    
-                    ${
-                        block.download
-                            ? `download="${block.download}"`
-                            : ""
-                    }
+                    data-edit="url"
                 >
-    
+
                     ${content}
-    
+
                 </a>
-    
+
             </section>
         `;
-    
+
     }
 
 };
+
 
 /* =====================================
    BLOCK RENDERER
 ===================================== */
 
-function expandBlockTemplates(blocks) {
-
-    return blocks.map(block => {
-
-        let result = block;
-
-        if (
-            block.type &&
-            block.type.startsWith("card-")
-        ) {
-
-            const template =
-                window.BLOCK_TEMPLATES?.[block.type];
-
-            if (template) {
-
-                result =
-                    template(block);
-
-            }
-
-        }
-
-        if (
-            result.blocks
-        ) {
-
-            result.blocks =
-                expandBlockTemplates(
-                    result.blocks
-                );
-
-        }
-
-        return result;
-
-    });
-
-}
-
-function renderBlocks(blocks, pageName, level = 1) {
-
-    blocks = expandBlockTemplates(blocks);
+function renderBlocks(blocks, pageName, level = 1, path = "root") {
 
     let html = "";
 
-    blocks.forEach(block => {
+    blocks.forEach((block, index) => {
+
+        const blockPath = `${path}.${index}`;
+
+        let blockHTML = "";
 
         if (block.type === "columns") {
 
-            html += renderColumns(
+            blockHTML = renderColumns(
                 block,
-                pageName
+                pageName,
+                blockPath
             );
 
-            return;
+        } else {
+
+            const renderer = BLOCKS[block.type];
+
+            if (!renderer) return;
+
+            blockHTML = renderer(
+                block,
+                pageName,
+                level,
+                blockPath
+            );
         }
 
-        const renderer =
-            BLOCKS[block.type];
-
-        if (!renderer) {
-
-            console.warn("Unknown block:", block.type);
-            return;
-        }
-
-        html += renderer(
-            block,
-            pageName,
-            level
-        );
+        html += editorWrap(blockHTML, blockPath);
 
     });
 
     return html;
+}
+
+/* =====================================
+   Editor Wrapper
+===================================== */
+function editorWrap(html, path) {
+
+    if (!isEditor)
+        return html;
+
+    return `
+        <div class="editor-wrapper" data-path="${path}">
+
+            ${html}
+
+        </div>
+    `;
+
 }
 
 /* =====================================
    COLUMNS
 ===================================== */
 
-function renderColumns(
-    block,
-    pageName
-) {
+function renderColumns(block, pageName) {
 
-    let html =
-        '<div class="columns">';
-
-    block.columns.forEach(
-        (column, index) => {
-
-            const weight =
-                block.weights?.[index] || 1;
-
-            html += `
-                <div
-                    class="column"
-                    style="flex:${weight};"
-                >
-                    ${renderBlocks(
-                        column,
-                        pageName
-                    )}
+    return `
+        <div class="columns">
+            ${block.columns.map(col => `
+                <div class="column">
+                    ${renderBlocks(col, pageName)}
                 </div>
-            `;
-
-        }
-    );
-
-    html += '</div>';
-
-    return html;
-
+            `).join("")}
+        </div>
+    `;
 }
 
 /* =====================================
