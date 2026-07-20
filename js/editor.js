@@ -5,6 +5,11 @@
 let CURRENT_JSON = null;
 let CURRENT_PAGE = null;
 
+// Clipboard
+let BLOCK_CLIPBOARD = null;
+// Currently moving block
+let MOVING_BLOCK = null;    
+
 // Files selected from the folder picker
 let LOCAL_FILES = new Map();
 
@@ -86,7 +91,8 @@ const AVAILABLE_BLOCKS = [
     "button",
     "collapsible",
     "lead",
-    "glossary_grid"
+    "glossary_grid",
+    "message"
 ];
 
 /* =====================================
@@ -293,15 +299,20 @@ function renderEditor() {
 
     preview.innerHTML = renderBlocks(CURRENT_JSON.blocks);
 
-    if (INSERT_MODE.active) {
-        injectInsertZones();
-    }
+    // Always create insertion points
+    injectInsertZones();
 
     syncJson();
-    // Enable inline editing after render
+
     enableInlineEditing();
     enableImageResize();
+    enableHoverToolbars();
+
 }
+
+/* =====================================
+   WRAPPER
+===================================== */
 
 /* =====================================
    WRAPPER
@@ -325,10 +336,44 @@ function editorWrap(html, block) {
 
             </div>
 
-            <!-- DELETE (same system, same layer concept) -->
-            <button class="editor-delete" data-delete="${block._id}">
-                ✕
-            </button>
+            <div class="editor-actions">
+
+                <button 
+                    class="editor-action editor-move"
+                    data-move="${block._id}"
+                    title="Move block"
+                >
+                    ✥
+                </button>
+
+
+                <button
+                    class="editor-action editor-copy"
+                    data-copy="${block._id}"
+                    title="Copy block"
+                >
+                    ⧉
+                </button>
+
+
+                <button
+                    class="editor-action editor-paste"
+                    data-paste="${block._id}"
+                    title="Paste block"
+                >
+                    📋
+                </button>
+
+
+                <button
+                    class="editor-action editor-delete"
+                    data-delete="${block._id}"
+                    title="Delete block"
+                >
+                    ✕
+                </button>
+
+            </div>
 
             ${html}
 
@@ -340,6 +385,8 @@ function editorWrap(html, block) {
 ===================================== */
 
 function injectInsertZones() {
+    
+    clearInsertZones();
 
     const preview = document.getElementById("editor-preview");
 
@@ -357,6 +404,8 @@ function injectInsertZones() {
 
     // root start zone
     const rootZone = createZone("root", "start");
+
+    rootZone.classList.add("root-zone");
 
     rootZone.style.top = "0";
 
@@ -413,8 +462,54 @@ function createZone(targetId, position) {
     const zone = document.createElement("div");
 
     zone.className = "insert-zone";
+
     zone.dataset.target = targetId;
     zone.dataset.position = position;
+
+
+    /*
+        Paste button inside every insert zone.
+        Uses the existing BLOCK_CLIPBOARD.
+    */
+
+    const paste = document.createElement("button");
+
+    paste.className = "insert-paste";
+    paste.textContent = "📋";
+    paste.title = "Paste block";
+
+
+    paste.onclick = (e) => {
+
+        e.stopPropagation();
+        e.preventDefault();
+
+        if (!BLOCK_CLIPBOARD) {
+            return;
+        }
+
+
+        const block = cloneBlock(BLOCK_CLIPBOARD);
+
+
+        // Give pasted blocks new IDs
+        ensureIds([block]);
+
+
+        insertExistingBlock(
+            zone.dataset.target,
+            zone.dataset.position,
+            block
+        );
+
+
+        saveHistory("Paste block");
+
+    };
+
+
+    zone.appendChild(paste);
+
 
     return zone;
 }
@@ -573,7 +668,63 @@ document.addEventListener("click", (e) => {
             .forEach(i => i.classList.remove("active"));
 
     }
+
+    //COPY BLOCK
+    const copy = e.target.closest("[data-copy]");
+
+    if (copy) {
+
+        const block = findBlockByUUID(
+            CURRENT_JSON.blocks,
+            copy.dataset.copy
+        );
+
+        copyBlock(block);
+
+        return;
+
+    }
     
+    //PASTE BLOCK
+    const paste = e.target.closest("[data-paste]");
+
+    if (paste) {
+
+        if (!BLOCK_CLIPBOARD)
+            return;
+
+        insertBlock(
+
+            paste.dataset.paste,
+            "after",
+            null,
+            cloneBlock(BLOCK_CLIPBOARD)
+
+        );
+
+        saveHistory("Paste block");
+
+        return;
+
+    }
+
+    const move = e.target.closest("[data-move]");
+
+    if (move) {
+
+        MOVING_BLOCK = move.dataset.move;
+
+        document.body.classList.add("moving-block");
+
+        console.log(
+            "Moving block:",
+            MOVING_BLOCK
+        );
+
+        return;
+
+    }
+
 
     const del = e.target.closest("[data-delete]");
     if (del) {
@@ -584,20 +735,58 @@ document.addEventListener("click", (e) => {
 
     const zone = e.target.closest(".insert-zone");
 
-    if (zone && INSERT_MODE.active) {
+    if (zone) {
 
-        insertBlock(
-            zone.dataset.target,
-            zone.dataset.position,
-            INSERT_MODE.type
-        );
 
-        saveHistory("Insert");
-        console.log(zone.dataset.target,)
-
-        deactivateInsertMode();
-        return;
-    }
+        /*
+            Moving existing block
+        */
+    
+        if (MOVING_BLOCK) {
+    
+    
+            moveBlock(
+                MOVING_BLOCK,
+                zone.dataset.target,
+                zone.dataset.position
+            );
+    
+    
+            MOVING_BLOCK = null;
+    
+            document.body.classList.remove(
+                "moving-block"
+            );
+    
+    
+            saveHistory("Move block");
+    
+            return;
+    
+        }
+    
+    
+        /*
+            Normal insert mode
+        */
+    
+        if (INSERT_MODE.active) {
+    
+            insertBlock(
+                zone.dataset.target,
+                zone.dataset.position,
+                INSERT_MODE.type
+            );
+    
+            saveHistory("Insert");
+    
+            deactivateInsertMode();
+    
+            return;
+    
+        }
+    
+    }   
 
     // NEW: cancel insert mode on any non-zone click
     if (INSERT_MODE.active && !e.target.closest(".block-palette")) {
@@ -619,7 +808,17 @@ document.addEventListener("click", (e) => {
     
         ACTIVE_WRAPPER = wrapper;
     
-        setToolbar(wrapper, TOOLBAR_TEXT);
+        const block = findBlockByUUID(
+            CURRENT_JSON.blocks,
+            wrapper.dataset.id
+        );
+        
+        setToolbar(
+            wrapper,
+            block?.type === "message"
+                ? [...TOOLBAR_MESSAGE, ...TOOLBAR_TEXT]
+                : TOOLBAR_TEXT
+        );
     }
 
     preview.addEventListener("focusin", (e) => {
@@ -808,6 +1007,7 @@ function applySelectionStyle(style) {
     // Save immediately
     saveCurrentEditor();
 
+    
 }
 
 /* =====================================
@@ -931,7 +1131,7 @@ function setToolbar(wrapper, tools) {
 
             }
 
-            tool.onclick?.();
+            tool.onclick?.call(wrapper);
 
         };
 
@@ -961,13 +1161,18 @@ function clearToolbar(wrapper) {
    COLOR MENU
 ===================================== */
 
-function createColorMenu() {
+/* =====================================
+   COLOR MENU
+===================================== */
+
+function createColorMenu(onSelect = null) {
 
     return TEXT_COLORS.map(color => {
 
         const button = document.createElement("button");
 
         button.className = "editor-color";
+
         button.title = color.name;
 
         button.style.backgroundColor = color.color;
@@ -975,16 +1180,28 @@ function createColorMenu() {
         button.onclick = (e) => {
 
             e.preventDefault();
+            e.stopPropagation();
 
+            // Custom behavior (messages, images, etc.)
+            if (onSelect) {
+
+                onSelect(color);
+
+                return;
+
+            }
+
+            // Default behavior = text color
             if (!ACTIVE_EDITOR) return;
 
             ACTIVE_EDITOR.focus();
 
             wrapSelection({
-
                 color: color.color
-
             });
+
+            saveCurrentEditor();
+
 
         };
 
@@ -1096,6 +1313,7 @@ const TOOLBAR_TEXT = [
             document.execCommand("bold");
     
             saveCurrentEditor();
+            saveHistory("Bold text");
     
         }
     
@@ -1114,6 +1332,7 @@ const TOOLBAR_TEXT = [
             document.execCommand("italic");
     
             saveCurrentEditor();
+            saveHistory("Italic text");
     
         }
     
@@ -1145,6 +1364,95 @@ const TOOLBAR_TEXT = [
 
 ];
 
+/* =====================================
+   MESSAGE TOOLBAR
+===================================== */
+
+const TOOLBAR_MESSAGE = [
+
+    {
+        icon: "🎨",
+        title: "Message Color",
+    
+        submenu() {
+    
+            return createColorMenu(color => {
+    
+                const wrapper = ACTIVE_WRAPPER;
+                if (!wrapper) return;
+    
+                const block = findBlockByUUID(
+                    CURRENT_JSON.blocks,
+                    wrapper.dataset.id
+                );
+    
+                if (!block) return;
+    
+                block.color = color.color;
+
+                syncJson();
+    
+                saveHistory("Message color");
+    
+                renderEditor();
+    
+            });
+    
+        }
+    
+    },
+
+    {
+        icon: "←",
+        title: "Align Left",
+
+        onclick() {
+
+            const wrapper = this.closest(".editor-wrapper");
+            if (!wrapper) return;
+
+            const block = findBlockByUUID(
+                CURRENT_JSON.blocks,
+                wrapper.dataset.id
+            );
+
+            if (!block) return;
+
+            block.side = "left";
+
+            saveHistory("Message left");
+            renderEditor();
+
+        }
+
+    },
+
+    {
+        icon: "→",
+        title: "Align Right",
+
+        onclick() {
+
+            const wrapper = this.closest(".editor-wrapper");
+            if (!wrapper) return;
+
+            const block = findBlockByUUID(
+                CURRENT_JSON.blocks,
+                wrapper.dataset.id
+            );
+
+            if (!block) return;
+
+            block.side = "right";
+
+            saveHistory("Message right");
+            renderEditor();
+
+        }
+
+    }
+
+];
 /* =====================================
    IMAGE TOOLBAR
 ===================================== */
@@ -1214,9 +1522,9 @@ function setImageAlign(align) {
    INSERT
 ===================================== */
 
-function insertBlock(targetId, position, type) {
+function insertBlock(targetId, position, type, existingBlock = null) {
 
-    const newBlock = createBlock(type);
+    const newBlock = existingBlock || createBlock(type);
 
     if (!newBlock._id) {
         newBlock._id = uuid();
@@ -1307,6 +1615,148 @@ function insertBlock(targetId, position, type) {
 }   
 
 /* =====================================
+   INSERT EXISTING BLOCK
+===================================== */
+
+function insertExistingBlock(targetId, position, block) {
+
+
+    /*
+        Insert into column
+    */
+
+    if (targetId === "column") {
+
+        const zone =
+            document.querySelector(
+                `.insert-zone[data-target="column"]:hover`
+            );
+
+        const col = zone?.closest(".column");
+
+        if (!col)
+            return;
+
+
+        const columnIndex =
+            Array.from(col.parentElement.children)
+                .indexOf(col);
+
+
+        const wrapper =
+            col.closest(".editor-wrapper");
+
+
+        const found =
+            findBlockListAndIndex(
+                CURRENT_JSON.blocks,
+                wrapper.dataset.id
+            );
+
+
+        if (!found)
+            return;
+
+
+        found.block.columns[columnIndex]
+            .push(block);
+
+
+        renderEditor();
+
+        return;
+
+    }
+
+
+    /*
+        Insert inside child container
+    */
+
+    if (position === "inside") {
+
+
+        const found =
+            findBlockListAndIndex(
+                CURRENT_JSON.blocks,
+                targetId
+            );
+
+
+        if (!found)
+            return;
+
+
+        if (!found.block.blocks) {
+            found.block.blocks = [];
+        }
+
+
+        found.block.blocks.push(block);
+
+
+        renderEditor();
+
+        return;
+
+    }
+
+
+    /*
+        Root
+    */
+
+    if (targetId === "root") {
+
+        CURRENT_JSON.blocks.push(block);
+
+        renderEditor();
+
+        return;
+
+    }
+
+
+    /*
+        Normal before / after
+    */
+
+    const found =
+        findBlockListAndIndex(
+            CURRENT_JSON.blocks,
+            targetId
+        );
+
+
+    if (!found)
+        return;
+
+
+    if (position === "before") {
+
+        found.list.splice(
+            found.index,
+            0,
+            block
+        );
+
+    }
+    else {
+
+        found.list.splice(
+            found.index + 1,
+            0,
+            block
+        );
+
+    }
+
+
+    renderEditor();
+
+}
+
+/* =====================================
    DELETE
 ===================================== */
 
@@ -1319,6 +1769,43 @@ function deleteBlock(id) {
     found.list.splice(found.index, 1);
 
     renderEditor();
+}
+
+/* =====================================
+   MOVE BLOCK
+===================================== */
+
+function moveBlock(id, targetId, position) {
+
+
+    const found =
+        findBlockListAndIndex(
+            CURRENT_JSON.blocks,
+            id
+        );
+
+
+    if (!found)
+        return;
+
+
+    // Remove original
+    const block = found.list.splice(
+        found.index,
+        1
+    )[0];
+
+
+    /*
+        Reinsert using existing logic
+    */
+
+    insertExistingBlock(
+        targetId,
+        position,
+        block
+    );
+
 }
 
 /* =====================================
@@ -1402,6 +1889,7 @@ function createBlock(type) {
         case "collapsible": return { ...base, title: "Section", blocks: [] };
         case "lead": return { ...base, title: "Lead", text: "", image: { src: "main.png" } };
         case "glossary_grid": return { ...base, items: [] };
+        case "message": return { ...base, side: "left", title: "JTAC", text: "Adjust fire."};
 
         default: return { ...base };
     }
@@ -1457,6 +1945,61 @@ function loadLocal() {
         return null;
 
     return JSON.parse(saved);
+
+}
+
+/* =====================================
+   BLOCK HELPERS
+===================================== */
+
+/*
+    Returns a completely independent copy of
+    a block and every child block.
+*/
+function cloneBlock(block) {
+
+    const copy = structuredClone(block);
+
+    regenerateBlockIds(copy);
+
+    return copy;
+
+}
+
+/*
+    Recursively assigns new IDs to a block
+    and all of its children.
+*/
+function regenerateBlockIds(block) {
+
+    block._id = uuid();
+
+    if (block.blocks) {
+
+        block.blocks.forEach(regenerateBlockIds);
+
+    }
+
+    if (block.columns) {
+
+        block.columns.forEach(column => {
+
+            column.forEach(regenerateBlockIds);
+
+        });
+
+    }
+
+}
+
+/*
+    Copies a block into the editor clipboard.
+*/
+function copyBlock(block) {
+
+    if (!block) return;
+
+    BLOCK_CLIPBOARD = cloneBlock(block);
 
 }
 
@@ -1640,6 +2183,63 @@ function enableImageResize() {
                 figureWidth: figure.clientWidth
 
             };
+
+        };
+
+    });
+
+}
+
+/* =====================================
+   HOVER TOOLBARS
+===================================== */
+
+function enableHoverToolbars() {
+
+    preview.querySelectorAll("[data-block]").forEach(element => {
+
+        element.onmouseenter = () => {
+
+            const wrapper = element.closest(".editor-wrapper");
+            if (!wrapper) return;
+
+            // Remember which block is currently being hovered
+            ACTIVE_WRAPPER = wrapper;
+
+            const block = findBlockByUUID(
+                CURRENT_JSON.blocks,
+                wrapper.dataset.id
+            );
+
+            if (!block) return;
+
+            let tools = null;
+
+            switch (block.type) {
+
+                case "message":
+                    tools = TOOLBAR_MESSAGE;
+                    break;
+
+                // Future:
+                // case "image":
+                //     tools = TOOLBAR_IMAGE;
+                //     break;
+
+            }
+
+            if (tools) {
+                setToolbar(wrapper, tools);
+            }
+
+        };
+
+        element.onmouseleave = () => {
+
+            const wrapper = element.closest(".editor-wrapper");
+            if (!wrapper) return;
+
+            clearToolbar(wrapper);
 
         };
 

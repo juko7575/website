@@ -1140,7 +1140,44 @@ ${editorInsertInside(block)}
             </section>
         `;
 
-    }
+    },
+    message(block, pageName, path = "") {
+
+        const side = block.side || "left";
+        const color = block.color || "var(--color-accent)";CURRENT_JSON
+    
+        return `
+            <section
+                class="block block-message message-${side}"
+                data-block="message"
+                data-path="${path}"
+            >
+    
+                <div
+                    class="message-bubble"
+                    style="--message-color:${color};"
+                >
+    
+                    <div
+                        class="message-title"
+                        data-edit="title"
+                    >
+                        ${formatText(block.title || "")}
+                    </div>
+    
+                    <div
+                        class="message-text"
+                        data-edit="text"
+                    >
+                        ${formatText(block.text || "")}
+                    </div>
+    
+                </div>
+    
+            </section>
+        `;
+    
+    },
 
 };
 

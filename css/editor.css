@@ -121,7 +121,29 @@
    EDITOR ACTIONS
 ===================================== */
 
+/* =====================================
+   BLOCK ACTION BAR
+===================================== */
+
+
 .editor-actions {
+
+    position: absolute;
+
+    top: 1px;
+    right: 1px;
+
+    display: flex;
+
+    gap: 2px;
+
+    height: 42px;
+
+    z-index: 100;
+
+}
+
+.editor-total-actions {
 
     display: flex;
     flex-direction: row;
@@ -129,6 +151,16 @@
     gap: 6px;
 
     margin-bottom: 16px;
+
+}
+
+
+.editor-wrapper:hover .editor-actions,
+.editor-wrapper.is-editing .editor-actions {
+
+    opacity:1;
+
+    transform:translateY(0);
 
 }
 
@@ -457,36 +489,56 @@
     box-shadow: none;
 }
 
-/* Base state */
+/* =====================================
+   BLOCK HOVER OUTLINE
+   ONLY DIRECTLY HOVERED BLOCK
+===================================== */
+
 .editor-wrapper > section,
 .editor-wrapper > .editor-block,
 .editor-wrapper > figure,
 .editor-wrapper > .block-image {
+
     outline: 3px dotted transparent;
+
     outline-offset: 6px;
 
     transition:
         outline-offset 0.12s ease,
         outline-color 0.12s ease;
+
 }
 
-/* Hover */
-.editor-wrapper:hover > section,
-.editor-wrapper:hover > .editor-block,
-.editor-wrapper:hover > figure,
-.editor-wrapper:hover > .block-image {
-    outline: 3px dotted rgba(74, 164, 255, 0.65);
+
+/*
+    :has() lets us ignore parent wrappers
+    when hovering child blocks.
+*/
+
+.editor-wrapper:hover:not(:has(.editor-wrapper:hover))
+> section,
+.editor-wrapper:hover:not(:has(.editor-wrapper:hover))
+> .editor-block,
+.editor-wrapper:hover:not(:has(.editor-wrapper:hover))
+> figure,
+.editor-wrapper:hover:not(:has(.editor-wrapper:hover))
+> .block-image {
+
+    outline:
+        3px dotted rgba(74,164,255,0.65);
+
     outline-offset: 2px;
+
 }
+
 
 /* =====================================
-   DELETE BUTTON (MATCH #page-close STYLE)
+   BLOCK ACTION BUTTONS
 ===================================== */
 
-.editor-delete {
-    position: absolute;
-    top: 1px;
-    right: 1px;
+.editor-action {
+
+    position:relative;
 
     width: 42px;
     height: 42px;
@@ -505,19 +557,24 @@
     cursor: pointer;
 
     opacity: 0;
+
     transition:
-        background var(--transition-fast),
-        color var(--transition-fast),
-        box-shadow var(--transition-fast);
+        opacity var(--transition-fast),
+        transform var(--transition-fast),
+        background var(--transition-fast);
+
+    transform: translateY(-2px);
 
     z-index: 100;
+
 }
 
-/* same interaction as #page-close */
-.editor-delete::after {
+.editor-action::after {
+
     content: "";
 
     position: absolute;
+
     left: 0;
     right: 0;
     bottom: 0;
@@ -529,15 +586,32 @@
     opacity: 0;
 
     transition: opacity var(--transition-fast);
+
 }
 
-.editor-delete:hover {
+.editor-action:hover {
+
     background: var(--color-accent);
+
 }
 
-.editor-delete:hover::after {
+.editor-action:hover::after {
+
     opacity: 1;
+
 }
+
+.editor-wrapper:hover .editor-action,
+.editor-wrapper.is-editing .editor-action {
+
+    opacity: 1;
+    transform: translateY(0);
+
+}
+
+
+
+
 
 .editor-wrapper:hover .editor-delete {
     opacity: 1;
@@ -551,69 +625,14 @@
     position: relative;
 }
 
-/* shared button base (IMPORTANT: unify everything) */
-.editor-toolbar,
-.editor-delete {
-    position: absolute;
-    top: 1px;
-    right: 1px;
 
-    height: 42px;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    opacity: 0;
-    transform: translateY(-2px);
-
-    transition:
-        opacity var(--transition-fast),
-        transform var(--transition-fast),
-        background var(--transition-fast),
-        color var(--transition-fast);
-
-    z-index: 100;
-}
-
-/* delete stays fixed width */
-.editor-delete {
-    width: 42px;
-    border: none;
-    background: transparent;
-    color: var(--color-text);
-    cursor: pointer;
-}
-
-/* toolbar sits to the LEFT of delete */
-.editor-toolbar {
-    right: 52px; /* space next to delete button */
-    padding: 0 6px;
-}
 
 /* =====================================
    TOOLBAR SUBMENU
 ===================================== */
 
-.editor-submenu {
 
-    position: absolute;
-
-    top: 46px;
-    right: 0;
-
-    display: flex;
-    gap: 4px;
-
-    padding: 4px;
-
-    background: var(--surface-glass-sidebar);
-
-    backdrop-filter: blur(var(--glass-blur));
-
-    z-index: 500;
-
-}
 
 .editor-submenu.active {
 
@@ -682,12 +701,14 @@
 
     z-index: 1000;
 
+    top: calc(100% - 1px);
+
 }
 
 
-/* show both on hover */
 .editor-wrapper:hover .editor-toolbar,
-.editor-wrapper:hover .editor-delete {
+.editor-wrapper.is-editing .editor-toolbar,
+.editor-toolbar:hover {
     opacity: 1;
     transform: translateY(0);
 }
@@ -758,23 +779,115 @@
 
 .insert-zone {
 
-    position: absolute;
+    /* position: absolute; */
 
     left: 0;
     right: 0;
 
     height: 18px;
 
-    background: rgba(74,164,255,0.06);
+    background: transparent;
 
     z-index: 50;
 
     cursor: pointer;
 
+    transition:
+        background var(--transition-fast);
+
 }
 
+
+/* Hover preview */
 .insert-zone:hover {
-    background: rgba(216,196,83,0.18);
+
+    background: rgba(74,164,255,0.35);
+
+}
+
+.root-zone {
+
+    position: relative;
+
+}
+
+/* =====================================
+   INSERT PASTE BUTTON
+===================================== */
+
+.insert-paste {
+
+    position: relative;
+
+    left: 8px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    border: none;
+
+    background: var(--surface-glass-sidebar);
+
+    color: var(--color-text);
+
+    cursor: pointer;
+
+    opacity: 0;
+
+    transition:
+        opacity var(--transition-fast),
+        background var(--transition-fast),
+        color var(--transition-fast);
+
+    z-index: 100;
+}
+
+
+.insert-zone:hover .insert-paste {
+
+    opacity: 1;
+
+}
+
+
+.insert-paste:hover {
+
+    background: var(--color-accent);
+
+    color: var(--color-bg);
+
+}
+
+
+body.moving-block .insert-zone {
+
+    background:
+        rgba(74,164,255,0.12);
+
+}
+
+
+body.moving-block .insert-zone:hover {
+
+    background:
+        rgba(216,196,83,0.35);
+
+}
+
+
+.insert-paste:hover {
+
+    background: var(--color-accent);
+
 }
 
 .palette-item.active-insert {
@@ -794,32 +907,12 @@
 }
 
 
-.editor-edit,
-.editor-delete {
-    position: absolute;
-
-    width: 42px;
-    height: 42px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    opacity: 0;
-    transition:
-        opacity .18s ease,
-        transform .18s ease;
-
-    transform: translateY(-2px);
-}
 
 .editor-edit {
     right: 42px;
 }
 
-.editor-delete {
-    right: 8px;
-}
+
 
 .editor-wrapper:hover > .editor-edit,
 .editor-wrapper:hover > .editor-delete {
@@ -840,20 +933,38 @@
 }
 
 
+/* =====================================
+   TEXT EDITOR TOOLBAR
+===================================== */
+
 .editor-toolbar {
+
     position: absolute;
+
     top: 1px;
-    right: 44px; /* sits next to delete button */
+
+    /*
+        Automatically sit left of block actions.
+        Keeps text tools separate from copy/delete/etc.
+    */
+    right: calc(1px + 42px * 4 + 8px);
+
     height: 42px;
 
     display: flex;
+
     align-items: center;
 
     opacity: 0;
-    transform: translateY(-2px);
-    transition: opacity .18s ease, transform .18s ease;
 
-    z-index: 100;
+    transform: translateY(-2px);
+
+    transition:
+        opacity var(--transition-fast),
+        transform var(--transition-fast);
+
+    z-index: 101;
+
 }
 
 .editor-control-btn {

@@ -1921,6 +1921,67 @@ a:hover {
 
 }
 
+/* =====================================
+   MESSAGE
+===================================== */
+
+.block-message {
+
+    display: flex;
+
+    margin: var(--space-md) 0;
+
+}
+
+.message-left {
+
+    justify-content: flex-start;
+
+}
+
+.message-right {
+
+    justify-content: flex-end;
+
+}
+
+.message-bubble {
+
+    width: 75%;
+    max-width: 75%;
+
+    padding: var(--space-md);
+
+    background: var(--surface-glass-sidebar);
+
+    border-left: 3px solid var(--message-color, var(--color-accent));
+
+}
+
+.message-right .message-bubble {
+
+    border-left: none;
+    border-right: 3px solid var(--message-color, var(--color-accent));
+
+}
+
+.message-title {
+
+    font-size: 12px;
+    font-weight: 700;
+
+    margin-bottom: var(--space-xs);
+
+    color: var(--color-text-secondary);
+
+}
+
+.message-text {
+
+    line-height: 1.5;
+
+}
+
 
 /* =====================================
    Header
